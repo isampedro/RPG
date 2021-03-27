@@ -1,5 +1,5 @@
 public class Item {
-    private double strength, agility, expertise, resistance, vitality;
+    private final double strength, agility, expertise, resistance, vitality;
 
     public Item(double strength, double agility, double expertise, double resistance, double vitality) {
         this.strength = strength;

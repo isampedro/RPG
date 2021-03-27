@@ -4,8 +4,7 @@ public enum Classes {
     defender(0.3,0.8),
     rogue(0.8,0.3);
 
-    private double attack;
-    private double defense;
+    private final double defense, attack;
 
     Classes(double attack, double defense) {
         this.attack = attack;

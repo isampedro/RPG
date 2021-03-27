@@ -1,7 +1,11 @@
+import java.util.LinkedList;
+import java.util.List;
+
 public class Main {
     public static void main( String[] args ) {
         Player attacker = new Player("warrior", 2);
-        attacker = attacker.putArmor(new Item(0,0,3,10,25));
-        System.out.println(attacker.getPerformance());
+        List<Item> weapons = new LinkedList<Item>(), helmets = new LinkedList<Item>(),
+                boots = new LinkedList<Item>(), gloves = new LinkedList<Item>(), armors = new LinkedList<Item>();
+        
     }
 }
