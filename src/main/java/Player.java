@@ -1,0 +1,93 @@
+public class Player {
+    private final Classes playerClass;
+    private final double height;
+    private final Item weapon, boots, helmet, gloves, armor;
+
+    public Player(String playerClass, double height) {
+        this.playerClass = Classes.valueOf(playerClass);
+
+        this.height = height;
+        weapon = new Item(0,0,0,0,0);
+        boots = new Item(0,0,0,0,0);
+        helmet = new Item(0,0,0,0,0);
+        gloves = new Item(0,0,0,0,0);
+        armor = new Item(0,0,0,0,0);
+    }
+
+    private Player(Classes playerClass, double height, Item weapon, Item boots, Item helmet, Item gloves, Item armor) {
+        this.playerClass = playerClass;
+        this.height = height;
+        this.weapon = weapon;
+        this.boots = boots;
+        this.helmet = helmet;
+        this.gloves = gloves;
+        this.armor = armor;
+    }
+
+    public Player putWeapon( Item weapon ) {
+        return new Player(playerClass, height, weapon, boots, helmet, gloves, armor);
+    }
+
+    public Player putBoots( Item boots ) {
+        return new Player(playerClass, height, weapon, boots, helmet, gloves, armor);
+    }
+
+    public Player putHelmet( Item helmet ) {
+        return new Player(playerClass, height, weapon, boots, helmet, gloves, armor);
+    }
+
+    public Player putGloves( Item gloves ) {
+        return new Player(playerClass, height, weapon, boots, helmet, gloves, armor);
+    }
+
+    public Player putArmor( Item armor ) {
+        return new Player(playerClass, height, weapon, boots, helmet, gloves, armor);
+    }
+
+    public double getStrength() {
+        double itemsStrength = weapon.getStrength() + boots.getStrength() + gloves.getStrength() + armor.getStrength() + helmet.getStrength();
+        return 100*Math.tanh(0.01*itemsStrength);
+    }
+
+    public double getAgility() {
+        double itemsAgility = weapon.getAgility() + boots.getAgility() + gloves.getAgility() + armor.getAgility() + helmet.getAgility();
+        return Math.tanh(0.01*itemsAgility);
+    }
+
+    public double getExpertise() {
+        double itemsExpertise = weapon.getExpertise() + boots.getExpertise() + gloves.getExpertise() + armor.getExpertise() + helmet.getExpertise();
+        return 0.6*Math.tanh(0.01*itemsExpertise);
+    }
+
+    public double getResistance() {
+        double itemsResistance = weapon.getResistance() + boots.getResistance() + gloves.getResistance() + armor.getResistance() + helmet.getResistance();
+        return Math.tanh(0.01*itemsResistance);
+    }
+
+    public double getVitality() {
+        double itemsVitality = weapon.getVitality() + boots.getVitality() + gloves.getVitality() + armor.getVitality() + helmet.getVitality();
+        return 100*Math.tanh(0.01*itemsVitality);
+    }
+
+    public double getATM() {
+        return 0.7 - Math.pow(3*height - 5, 4) + Math.pow(3*height - 5, 2) + height/4;
+    }
+
+    public double getDEM() {
+        return  1.9 + Math.pow(2.5*height - 4.16, 4) - Math.pow(2.5*height - 4.16,2) - 3*height/10;
+    }
+
+    public double getAttack() {
+        double attack = (getAgility() + getExpertise())*getStrength()*getATM();
+        return attack;
+    }
+
+    public double getDefense() {
+        double attack = (getResistance() + getExpertise())*getVitality()*getDEM();
+        return attack;
+    }
+
+    public double getPerformance() {
+        return playerClass.getAttack()*getAttack() + playerClass.getDefense()*getDefense();
+    }
+}
