@@ -7,11 +7,11 @@ public class Player {
         this.playerClass = Classes.valueOf(playerClass);
 
         this.height = height;
-        weapon = new Item(0,0,0,0,0);
-        boots = new Item(0,0,0,0,0);
-        helmet = new Item(0,0,0,0,0);
-        gloves = new Item(0,0,0,0,0);
-        armor = new Item(0,0,0,0,0);
+        weapon = new Item(0,0,0,0,0,0);
+        boots = new Item(0,0,0,0,0,0);
+        helmet = new Item(0,0,0,0,0,0);
+        gloves = new Item(0,0,0,0,0,0);
+        armor = new Item(0,0,0,0,0,0);
     }
 
     private Player(Classes playerClass, double height, Item weapon, Item boots, Item helmet, Item gloves, Item armor) {
@@ -78,16 +78,27 @@ public class Player {
     }
 
     public double getAttack() {
-        double attack = (getAgility() + getExpertise())*getStrength()*getATM();
-        return attack;
+        return (getAgility() + getExpertise())*getStrength()*getATM();
     }
 
     public double getDefense() {
-        double attack = (getResistance() + getExpertise())*getVitality()*getDEM();
-        return attack;
+        return (getResistance() + getExpertise())*getVitality()*getDEM();
     }
 
     public double getPerformance() {
         return playerClass.getAttack()*getAttack() + playerClass.getDefense()*getDefense();
+    }
+
+    @Override
+    public String toString() {
+        return "Player{" +
+                "playerClass=" + playerClass +
+                ", height=" + height +
+                ", weapon=" + weapon +
+                ", boots=" + boots +
+                ", helmet=" + helmet +
+                ", gloves=" + gloves +
+                ", armor=" + armor +
+                '}';
     }
 }
