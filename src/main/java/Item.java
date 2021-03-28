@@ -1,18 +1,18 @@
 public class Item {
+    private final ItemType type;
     private final double strength, agility, expertise, resistance, vitality;
-    private final int id;
 
-    public Item(int id, double strength, double agility, double expertise, double resistance, double vitality) {
+    public Item(double strength, double agility, double expertise, double resistance, double vitality, ItemType type) {
+        this.type = type;
         this.strength = strength;
         this.agility = agility;
         this.expertise = expertise;
         this.resistance = resistance;
         this.vitality = vitality;
-        this.id = id;
     }
 
-    public int getId() {
-        return id;
+    public ItemType getType() {
+        return type;
     }
 
     public double getStrength() {

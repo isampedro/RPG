@@ -1,8 +1,8 @@
 public enum Classes {
-    warrior(0.6, 0.6),
-    archer(0.9,0.1),
-    defender(0.3,0.8),
-    rogue(0.8,0.3);
+    WARRIOR(0.6, 0.6),
+    ARCHER(0.9,0.1),
+    DEFENDER(0.3,0.8),
+    ROGUE(0.8,0.3);
 
     private final double defense, attack;
 

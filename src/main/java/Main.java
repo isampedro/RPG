@@ -7,24 +7,18 @@ import java.util.*;
 public class Main {
 
     public static void main( String[] args ) throws IOException {
-        Player attacker = new Player("warrior", 2);
         List<Item> weapons = new ArrayList<Item>(), boots = new ArrayList<Item>(), helmets = new ArrayList<Item>(), gloves = new ArrayList<Item>(),
                 armors = new ArrayList<Item>();
-        int MAX_LINES = 1000;
-        parseFile("allitems/guantes.tsv", gloves, MAX_LINES);
-        System.out.println(gloves);
-        parseFile("allitems/botas.tsv", boots, MAX_LINES);
-        System.out.println(boots);
-        parseFile("allitems/armas.tsv", weapons, MAX_LINES);
-        System.out.println(weapons);
-        parseFile("allitems/cascos.tsv", helmets, MAX_LINES);
-        System.out.println(helmets);
-        parseFile("allitems/pecheras.tsv", armors, MAX_LINES);
-        System.out.println(armors);
-        System.out.println("All done");
+        int MAX_LINES = 10;
+        Characteristics characteristics = new Characteristics("WARRIOR", parseFile("allitems/armas.tsv", MAX_LINES, ItemType.WEAPON), parseFile("allitems/cascos.tsv", MAX_LINES, ItemType.HELMET),
+                parseFile("allitems/guantes.tsv", MAX_LINES, ItemType.GLOVES), parseFile("allitems/pecheras.tsv", MAX_LINES, ItemType.ARMOR), parseFile("allitems/botas.tsv", MAX_LINES, ItemType.BOOTS), 1.6 );
+        Roulette.RouletteSolver(characteristics, 4);
+
+        System.out.println("All done!");
     }
 
-    private static void parseFile(String file, List<Item> list, int maxLines ) throws IOException {
+    private static List<Item> parseFile(String file, int maxLines, ItemType type ) throws IOException {
+        List<Item> list = new ArrayList<Item>();
         FileReader fileReader = new FileReader(file);
         BufferedReader reader = new BufferedReader(fileReader);
         String line, attribute; Scanner scanner;
@@ -58,10 +52,11 @@ public class Main {
                 }
                 index++;
             }
-            list.add( new Item(id, strength, agility, expertise, resistance, vitality));
+            list.add( new Item(strength, agility, expertise, resistance, vitality, type));
             lines++;
         }
         reader.close();
         fileReader.close();
+        return list;
     }
 }

@@ -1,20 +1,18 @@
 public class Player {
     private final Classes playerClass;
-    private final double height;
+    private double height;
     private final Item weapon, boots, helmet, gloves, armor;
 
-    public Player(String playerClass, double height) {
+    public Player(String playerClass) {
         this.playerClass = Classes.valueOf(playerClass);
-
-        this.height = height;
-        weapon = new Item(0,0,0,0,0,0);
-        boots = new Item(0,0,0,0,0,0);
-        helmet = new Item(0,0,0,0,0,0);
-        gloves = new Item(0,0,0,0,0,0);
-        armor = new Item(0,0,0,0,0,0);
+        weapon = new Item(0,0,0,0,0,ItemType.WEAPON);
+        boots = new Item(0,0,0,0,0,ItemType.BOOTS);
+        helmet = new Item(0,0,0,0,0,ItemType.HELMET);
+        gloves = new Item(0,0,0,0,0,ItemType.GLOVES);
+        armor = new Item(0,0,0,0,0,ItemType.ARMOR);
     }
 
-    private Player(Classes playerClass, double height, Item weapon, Item boots, Item helmet, Item gloves, Item armor) {
+    public Player(Classes playerClass, double height, Item weapon, Item boots, Item helmet, Item gloves, Item armor) {
         this.playerClass = playerClass;
         this.height = height;
         this.weapon = weapon;
@@ -77,16 +75,20 @@ public class Player {
         return  1.9 + Math.pow(2.5*height - 4.16, 4) - Math.pow(2.5*height - 4.16,2) - 3*height/10;
     }
 
-    public double getAttack() {
+    public double getItemsAttack() {
         return (getAgility() + getExpertise())*getStrength()*getATM();
     }
 
-    public double getDefense() {
+    public double getItemsDefense() {
         return (getResistance() + getExpertise())*getVitality()*getDEM();
     }
 
     public double getPerformance() {
-        return playerClass.getAttack()*getAttack() + playerClass.getDefense()*getDefense();
+        return playerClass.getAttack()*getItemsAttack() + playerClass.getDefense()*getItemsDefense();
+    }
+
+    public void setHeight(double height) {
+        this.height = height;
     }
 
     @Override
