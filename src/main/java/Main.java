@@ -10,23 +10,28 @@ public class Main {
         Player attacker = new Player("warrior", 2);
         List<Item> weapons = new ArrayList<Item>(), boots = new ArrayList<Item>(), helmets = new ArrayList<Item>(), gloves = new ArrayList<Item>(),
                 armors = new ArrayList<Item>();
-        parseFile("allitems/guantes.tsv", weapons);
-        parseFile("allitems/botas.tsv", boots);
-        parseFile("allitems/armas.tsv", helmets);
-        parseFile("allitems/cascos.tsv", gloves);
-        parseFile("allitems/pecheras.tsv", armors);
+        int MAX_LINES = 1000;
+        parseFile("allitems/guantes.tsv", gloves, MAX_LINES);
+        System.out.println(gloves);
+        parseFile("allitems/botas.tsv", boots, MAX_LINES);
+        System.out.println(boots);
+        parseFile("allitems/armas.tsv", weapons, MAX_LINES);
+        System.out.println(weapons);
+        parseFile("allitems/cascos.tsv", helmets, MAX_LINES);
+        System.out.println(helmets);
+        parseFile("allitems/pecheras.tsv", armors, MAX_LINES);
+        System.out.println(armors);
         System.out.println("All done");
     }
 
-    private static void parseFile(String file, List<Item> list ) throws IOException {
+    private static void parseFile(String file, List<Item> list, int maxLines ) throws IOException {
         FileReader fileReader = new FileReader(file);
         BufferedReader reader = new BufferedReader(fileReader);
         String line, attribute; Scanner scanner;
         double strength=0, agility=0, expertise=0, resistance=0, vitality=0;
-        int index, id = 0;
+        int index, id = 0, lines = 0;
         reader.readLine();
-        Item item;
-        while( (line = reader.readLine()) != null ) {
+        while( (line = reader.readLine()) != null && lines < maxLines ) {
             index = 0;
             scanner = new Scanner(line);
             scanner.useDelimiter("\\t|\\s");
@@ -54,6 +59,7 @@ public class Main {
                 index++;
             }
             list.add( new Item(id, strength, agility, expertise, resistance, vitality));
+            lines++;
         }
         reader.close();
         fileReader.close();
