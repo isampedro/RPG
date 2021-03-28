@@ -3,7 +3,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-public class Roulette {
+public class Universal {
     public static List<Player> solve(Characteristics characteristics, int K) {
         if( K <= 0 ) {
             System.exit(1);
@@ -42,7 +42,7 @@ public class Roulette {
         List<Player> chosen = new ArrayList<>();
         boolean found = false;
         for( int i = 0; i < K; i++ ) {
-            rs[i] = random.nextDouble();
+            rs[i] = (random.nextDouble() + i)/K;
             System.out.println("Random " + i + " is " + rs[i]);
             if(rs[i] < cumulatedFitness.get(0)) {
                 chosen.add(players.get(0));

@@ -12,7 +12,9 @@ public class Main {
         int MAX_LINES = 10;
         Characteristics characteristics = new Characteristics("WARRIOR", parseFile("allitems/armas.tsv", MAX_LINES, ItemType.WEAPON), parseFile("allitems/cascos.tsv", MAX_LINES, ItemType.HELMET),
                 parseFile("allitems/guantes.tsv", MAX_LINES, ItemType.GLOVES), parseFile("allitems/pecheras.tsv", MAX_LINES, ItemType.ARMOR), parseFile("allitems/botas.tsv", MAX_LINES, ItemType.BOOTS), 1.6 );
-        Roulette.RouletteSolver(characteristics, 4);
+        for (Player player : Ranking.solve(characteristics, 4)) {
+            System.out.println("Perfomance: " + player.getPerformance());
+        }
 
         System.out.println("All done!");
     }

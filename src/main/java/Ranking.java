@@ -3,7 +3,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-public class Roulette {
+public class Ranking {
     public static List<Player> solve(Characteristics characteristics, int K) {
         if( K <= 0 ) {
             System.exit(1);
@@ -23,16 +23,22 @@ public class Roulette {
             }
         }
 
-        double fitnessTotal = 0;
-        for (Player player : players) {
-            fitnessTotal += player.getPerformance();
+        players.sort((p1, p2) -> Double.compare(p2.getPerformance(), p1.getPerformance()));
+
+        double N = players.size();
+        double aux, totalFitness = 0;
+        List<Double> pseudoPerformance = new ArrayList<>();
+        for( int i = 0; i < players.size(); i++ ) {
+            aux = (N-i+1)/ N;
+            pseudoPerformance.add(aux);
+            totalFitness += aux;
         }
 
         List<Double> relativeFitness = new ArrayList<>(), cumulatedFitness = new ArrayList<>();
-        cumulatedFitness.add(players.get(0).getPerformance()/fitnessTotal);
-        relativeFitness.add(players.get(0).getPerformance()/fitnessTotal);
+        cumulatedFitness.add(pseudoPerformance.get(0)/totalFitness);
+        relativeFitness.add(pseudoPerformance.get(0)/totalFitness);
         for( int i = 1; i < players.size(); i++ ) {
-            relativeFitness.add(players.get(i).getPerformance()/fitnessTotal);
+            relativeFitness.add(pseudoPerformance.get(i) /totalFitness);
             cumulatedFitness.add(relativeFitness.get(i) + cumulatedFitness.get(i-1));
             //System.out.println(cumulatedFitness.get(i));
         }
