@@ -17,7 +17,7 @@ public class Resolver {
                             children.addAll(Mutations.simple(random, player, characteristics, K));
                             break;
                         case 1:
-                            switch (random.nextInt(3)) {
+                            switch (random.nextInt(4)) {
                                 case 0:
                                     children.addAll(Crossovers.singlePoint(player, playerList.get((playerList.indexOf(player) + 1) % playerList.size()) , random));
                                     break;
@@ -26,6 +26,9 @@ public class Resolver {
                                     break;
                                 case 2:
                                     children.addAll(Crossovers.annular(player, playerList.get((playerList.indexOf(player) + 1) % playerList.size()) , random));
+                                    break;
+                                case 3:
+                                    children.addAll(Crossovers.uniform(player, playerList.get((playerList.indexOf(player) + 1) % playerList.size()) , random));
                                     break;
                             }
                     }

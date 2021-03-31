@@ -98,4 +98,29 @@ public class Crossovers {
 
         return children;
     }
+
+    public static List<Player> uniform(Player p1, Player p2, Random random) {
+        boolean rand;
+        double auxHeight;
+        List<Player> children = new ArrayList<>();
+        Player child1 = new Player(p1), child2 = new Player(p2);
+        Item auxItem;
+
+        for (int i = 1; i <= 6; i++) {
+            rand = random.nextBoolean();
+            if (i == 6 && rand) {
+                auxHeight = child1.getHeight();
+                child1.setHeight(child2.getHeight());
+                child2.setHeight(auxHeight);
+            } else if( i < 6 && rand){
+                auxItem = child1.getByIndex(i);
+                child1.setByIndex(i, child2.getByIndex(i));
+                child2.setByIndex(i, auxItem);
+            }
+        }
+        children.add(child1);
+        children.add(child2);
+
+        return children;
+    }
 }
