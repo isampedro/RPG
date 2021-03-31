@@ -9,7 +9,7 @@ public class Elite {
         players.sort((p1, p2) -> Double.compare(p2.getPerformance(), p1.getPerformance()));
 
         List<Player> result = new ArrayList<>();
-        for( int i = 0; i < K; i++) {
+        for( int i = 0; i < K && i < players.size(); i++) {
             result.add(players.get(i));
         }
 
