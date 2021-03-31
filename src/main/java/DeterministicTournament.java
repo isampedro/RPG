@@ -10,7 +10,7 @@ public class DeterministicTournament {
         Player winner = null;
         int index;
         Random random = new Random(System.currentTimeMillis());
-        for( int i = 0; i < K; i++ ) {
+        for( int i = 0; i < K && i < players.size(); i++ ) {
             for( int j = 0; j < M; j++ ) {
                 index = random.nextInt(players.size()-1);
                 if( winner == null || winner.getPerformance() < players.get(index).getPerformance() ) {

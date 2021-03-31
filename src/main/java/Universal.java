@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -20,14 +19,13 @@ public class Universal {
         for( int i = 1; i < players.size(); i++ ) {
             relativeFitness.add(players.get(i).getPerformance()/fitnessTotal);
             cumulatedFitness.add(relativeFitness.get(i) + cumulatedFitness.get(i-1));
-            //System.out.println(cumulatedFitness.get(i));
         }
 
         Random random = new Random(System.currentTimeMillis());
         Double[] rs = new Double[K];
         List<Player> chosen = new ArrayList<>();
         boolean found = false;
-        for( int i = 0; i < K; i++ ) {
+        for( int i = 0; i < K && i < players.size(); i++ ) {
             rs[i] = (random.nextDouble() + i)/K;
             System.out.println("Random " + i + " is " + rs[i]);
             if(rs[i] < cumulatedFitness.get(0)) {

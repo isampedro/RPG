@@ -175,12 +175,12 @@ public class Player {
     @Override
     public String toString() {
         return "playerClass=" + playerClass +
-                "\n, height=" + height +
-                "\n, weapon=" + weapon +
-                "\n, boots=" + boots +
-                "\n, helmet=" + helmet +
-                "\n, gloves=" + gloves +
-                "\n, armor=" + armor +
+                "\nheight=" + height +
+                "\nweapon=" + weapon +
+                "\nboots=" + boots +
+                "\nhelmet=" + helmet +
+                "\ngloves=" + gloves +
+                "\narmor=" + armor +
                 '}';
     }
 }
