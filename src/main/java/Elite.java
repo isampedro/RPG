@@ -1,7 +1,7 @@
 import java.util.*;
 
 public class Elite {
-    public static List<Player> solve(List<Player> players, int K, Characteristics characteristics) {
+    public static List<Player> solve(List<Player> players, int K) {
         if( K <= 0 ) {
             System.exit(1);
         }

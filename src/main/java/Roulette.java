@@ -4,23 +4,9 @@ import java.util.List;
 import java.util.Random;
 
 public class Roulette {
-    public static List<Player> solve(Characteristics characteristics, int K) {
+    public static List<Player> solve(List<Player> players, int K) {
         if( K <= 0 ) {
             System.exit(1);
-        }
-
-        List<Player> players = new LinkedList<>();
-
-        for (Item weapon : characteristics.getWeapons()) {
-            for (Item armor : characteristics.getArmors()) {
-                for (Item boot : characteristics.getBoots()) {
-                    for (Item helmet : characteristics.getHelmets()) {
-                        for (Item glove : characteristics.getGloves()) {
-                            players.add(new Player(characteristics.getPlayerClass(), characteristics.getHeight(), weapon, boot, helmet, glove, armor));
-                        }
-                    }
-                }
-            }
         }
 
         double fitnessTotal = 0;

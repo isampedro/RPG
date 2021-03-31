@@ -1,24 +1,11 @@
 import java.util.*;
 
 public class DeterministicTournament {
-    public static List<Player> solve( Characteristics characteristics, int K, int M) {
+    public static List<Player> solve( List<Player> players, int K, int M) {
         if( K <= 0 ) {
             System.exit(1);
         }
 
-        List<Player> players = new LinkedList<>();
-
-        for (Item weapon : characteristics.getWeapons()) {
-            for (Item armor : characteristics.getArmors()) {
-                for (Item boot : characteristics.getBoots()) {
-                    for (Item helmet : characteristics.getHelmets()) {
-                        for (Item glove : characteristics.getGloves()) {
-                            players.add(new Player(characteristics.getPlayerClass(), characteristics.getHeight(), weapon, boot, helmet, glove, armor));
-                        }
-                    }
-                }
-            }
-        }
         List<Player> chosen = new ArrayList<>();
         Player winner = null;
         int index;
