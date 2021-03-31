@@ -1,8 +1,19 @@
 public class Player {
     private final Classes playerClass;
     private double height;
-    private final Item weapon, boots, helmet, gloves, armor;
+    private Item weapon, boots, helmet, gloves, armor;
     private Player father;
+
+    public Player(Player player) {
+        this.playerClass = player.playerClass;
+        this.height = player.height;
+        this.weapon = player.weapon;
+        this.boots = player.boots;
+        this.helmet = player.helmet;
+        this.gloves = player.gloves;
+        this.armor = player.armor;
+        this.father = player;
+    }
 
     public Player(Classes playerClass) {
         this.playerClass = playerClass;
@@ -138,6 +149,27 @@ public class Player {
 
     public Player putHeight(double height) {
         return new Player(playerClass, height, weapon, boots, helmet, gloves, armor);
+    }
+
+    public Item getByIndex( int index ) {
+        switch (index) {
+            case 1: return weapon;
+            case 2: return boots;
+            case 3: return helmet;
+            case 4: return gloves;
+            case 5: return armor;
+        }
+        return null;
+    }
+
+    public void setByIndex( int index, Item item ) {
+        switch (index) {
+            case 1: weapon = item; break;
+            case 2: boots = item; break;
+            case 3: helmet = item; break;
+            case 4: gloves = item; break;
+            case 5: armor = item; break;
+        }
     }
 
     @Override
