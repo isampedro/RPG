@@ -9,14 +9,10 @@ public class Main {
     public static void main( String[] args ) throws IOException {
         List<Item> weapons = new ArrayList<Item>(), boots = new ArrayList<Item>(), helmets = new ArrayList<Item>(), gloves = new ArrayList<Item>(),
                 armors = new ArrayList<Item>();
-        int MAX_LINES = 10;
+        int MAX_LINES = 100000;
         Characteristics characteristics = new Characteristics("WARRIOR", parseFile("allitems/armas.tsv", MAX_LINES, ItemType.WEAPON), parseFile("allitems/cascos.tsv", MAX_LINES, ItemType.HELMET),
                 parseFile("allitems/guantes.tsv", MAX_LINES, ItemType.GLOVES), parseFile("allitems/pecheras.tsv", MAX_LINES, ItemType.ARMOR), parseFile("allitems/botas.tsv", MAX_LINES, ItemType.BOOTS), 1.6 );
-        for (Player player : ProbabilisticTournament.solve(characteristics, 4)) {
-            System.out.println("Perfomance: " + player.getPerformance());
-        }
-
-
+        System.out.println("Perfomance: " + Resolver.solve(characteristics, 10, "elite").getPerformance());
         System.out.println("All done!");
     }
 

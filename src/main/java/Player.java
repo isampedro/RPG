@@ -3,8 +3,8 @@ public class Player {
     private double height;
     private final Item weapon, boots, helmet, gloves, armor;
 
-    public Player(String playerClass) {
-        this.playerClass = Classes.valueOf(playerClass);
+    public Player(Classes playerClass) {
+        this.playerClass = playerClass;
         weapon = new Item(0,0,0,0,0,ItemType.WEAPON);
         boots = new Item(0,0,0,0,0,ItemType.BOOTS);
         helmet = new Item(0,0,0,0,0,ItemType.HELMET);
@@ -89,6 +89,10 @@ public class Player {
 
     public void setHeight(double height) {
         this.height = height;
+    }
+
+    public Player putHeight(double height) {
+        return new Player(playerClass, height, weapon, boots, helmet, gloves, armor);
     }
 
     @Override

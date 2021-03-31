@@ -6,7 +6,7 @@ public class Characteristics {
     private List<Item> weapons, helmets, gloves, armors, boots;
 
     public Characteristics(String playerClass, List<Item> weapons, List<Item> helmets, List<Item> gloves, List<Item> armors, List<Item> boots, double height) {
-        this.playerClass = Classes.valueOf(playerClass);
+        this.playerClass = Classes.valueOf(playerClass.toUpperCase());
         this.weapons = weapons;
         this.helmets = helmets;
         this.gloves = gloves;
