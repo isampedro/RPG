@@ -2,6 +2,7 @@ public class Player {
     private final Classes playerClass;
     private double height;
     private final Item weapon, boots, helmet, gloves, armor;
+    private Player father;
 
     public Player(Classes playerClass) {
         this.playerClass = playerClass;
@@ -10,6 +11,7 @@ public class Player {
         helmet = new Item(0,0,0,0,0,ItemType.HELMET);
         gloves = new Item(0,0,0,0,0,ItemType.GLOVES);
         armor = new Item(0,0,0,0,0,ItemType.ARMOR);
+        height = 1.3;
     }
 
     public Player(Classes playerClass, double height, Item weapon, Item boots, Item helmet, Item gloves, Item armor) {
@@ -20,6 +22,49 @@ public class Player {
         this.helmet = helmet;
         this.gloves = gloves;
         this.armor = armor;
+    }
+
+    public Player(Classes playerClass, double height, Item weapon, Item boots, Item helmet, Item gloves, Item armor, Player father) {
+        this.playerClass = playerClass;
+        this.height = height;
+        this.weapon = weapon;
+        this.boots = boots;
+        this.helmet = helmet;
+        this.gloves = gloves;
+        this.armor = armor;
+        this.father = father;
+    }
+
+    public Player getFather() {
+        return father;
+    }
+
+    public Classes getPlayerClass() {
+        return playerClass;
+    }
+
+    public double getHeight() {
+        return height;
+    }
+
+    public Item getWeapon() {
+        return weapon;
+    }
+
+    public Item getBoots() {
+        return boots;
+    }
+
+    public Item getHelmet() {
+        return helmet;
+    }
+
+    public Item getGloves() {
+        return gloves;
+    }
+
+    public Item getArmor() {
+        return armor;
     }
 
     public Player putWeapon( Item weapon ) {
@@ -97,14 +142,13 @@ public class Player {
 
     @Override
     public String toString() {
-        return "Player{" +
-                "playerClass=" + playerClass +
-                ", height=" + height +
-                ", weapon=" + weapon +
-                ", boots=" + boots +
-                ", helmet=" + helmet +
-                ", gloves=" + gloves +
-                ", armor=" + armor +
+        return "playerClass=" + playerClass +
+                "\n, height=" + height +
+                "\n, weapon=" + weapon +
+                "\n, boots=" + boots +
+                "\n, helmet=" + helmet +
+                "\n, gloves=" + gloves +
+                "\n, armor=" + armor +
                 '}';
     }
 }

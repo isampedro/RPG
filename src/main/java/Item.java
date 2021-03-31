@@ -37,6 +37,6 @@ public class Item {
 
     @Override
     public String toString() {
-        return "Item strength=" + strength + ", agility=" + agility + ", expertise=" + expertise + ", resistance=" + resistance + ", vitality=" + vitality + '\n';
+        return "strength=" + strength + ", agility=" + agility + ", expertise=" + expertise + ", resistance=" + resistance + ", vitality=" + vitality;
     }
 }
