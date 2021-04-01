@@ -24,7 +24,7 @@ for line in stdin:
     i = i + 1
     ax.plot(generations, averages, label = 'Average', color = 'blue')
     ax.plot(generations, minimums, label = 'Minimum Performance', color = 'red')
-    plt.pause(0.5)
+    plt.pause(0.02)
 
 plt.show()
 print('done')
