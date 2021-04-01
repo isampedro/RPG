@@ -16,12 +16,6 @@ public class Main {
         Resolver resolver = new Resolver();
         List<Player> winners = resolver.solve(characteristics, Integer.parseInt(args[1]), Integer.parseInt(args[2]), args[3], args[4], args[5],
                 args[6], Long.parseLong(args[7]), Double.parseDouble(args[8]), args[9], args[10], Integer.parseInt(args[11]), Integer.parseInt(args[12]), Integer.parseInt(args[13]) );
-        for (Player winner : winners) {
-//            System.out.println("Player:\n" + winner);
-//            System.out.println("Performance: " + winner.getPerformance());
-//            System.out.println("Generation: " + winner.getGeneration());
-        }
-//        System.out.println("All done!");
     }
 
     private static List<Item> parseFile(String file, int maxLines, ItemType type ) throws IOException {
