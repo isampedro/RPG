@@ -27,8 +27,7 @@ public class Resolver {
                 averageFitness += player.getPerformance();
             }
             averageFitness /= currentGeneration.size();
-            System.out.println(averageFitness);
-            System.out.println(minimumFitness);
+            System.out.println(averageFitness + " " + minimumFitness + " ");
 
             generation++;
             for( int i = 0; i < currentGeneration.size(); i+=2) {
