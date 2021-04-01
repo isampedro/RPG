@@ -7,18 +7,20 @@ public class Main {
 
     public static void main( String[] args ) throws IOException {
         int MAX_LINES = 100000;
-        Characteristics characteristics = new Characteristics("warrior",
+        Characteristics characteristics = new Characteristics(args[0],
                 parseFile("allitems/armas.tsv", MAX_LINES, ItemType.WEAPON),
                 parseFile("allitems/cascos.tsv", MAX_LINES, ItemType.HELMET),
                 parseFile("allitems/guantes.tsv", MAX_LINES, ItemType.GLOVES),
                 parseFile("allitems/pecheras.tsv", MAX_LINES, ItemType.ARMOR),
                 parseFile("allitems/botas.tsv", MAX_LINES, ItemType.BOOTS), 1.6);
         Resolver resolver = new Resolver();
-        Player winner = resolver.solve(characteristics, 10, 4, "Elite", "single_point",
-                "complete_mutation", "TIME", (long) 50000, 0.7, "fill_parent", 7);
-        System.out.println("Player:\n" + winner);
-        System.out.println("Performance: " + winner.getPerformance());
-        System.out.println("Generation: " + winner.getGeneration());
+        List<Player> winners = resolver.solve(characteristics, Integer.parseInt(args[1]), Integer.parseInt(args[2]), args[3], args[4], args[5],
+                args[6], Long.parseLong(args[7]), Double.parseDouble(args[8]), args[9], args[10], Integer.parseInt(args[11]), Integer.parseInt(args[12]), Integer.parseInt(args[13]) );
+        for (Player winner : winners) {
+            System.out.println("Player:\n" + winner);
+            System.out.println("Performance: " + winner.getPerformance());
+            System.out.println("Generation: " + winner.getGeneration());
+        }
         System.out.println("All done!");
     }
 
