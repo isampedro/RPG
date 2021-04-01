@@ -3,100 +3,113 @@ import java.util.List;
 import java.util.Random;
 
 public class Resolver {
-    public static Player solve( Characteristics characteristics, int K, Integer M, String selection, String crossOverMethod, String mutationMethod, String evaluatorValue, Long parameterMillis, double Pm ) {
-        List<Player> playerList = new ArrayList<>();
-        playerList.add(new Player(characteristics.getPlayerClass(), 0));
-        Random random = new Random(System.currentTimeMillis());
-        List<Player> children = new ArrayList<>(), toAdd = new ArrayList<>(), toRemove = new ArrayList<>();
+    public Player solve( Characteristics characteristics, int K, Integer M, String selection, String crossOverMethod, String mutationMethod,
+                                String evaluatorValue, Long parameterMillis, double Pm, String implementation, int N ) {
+        List<Player> currentGeneration = new ArrayList<>();
+        currentGeneration.add(new Player(characteristics.getPlayerClass(), 0));
+        List<Player> newGeneration = new ArrayList<>();
         Evaluator evaluator = evaluator(evaluatorValue);
         long start = System.currentTimeMillis();
         do {
-            for (Player player : playerList) {
-                if( playerList.size() > 1) {
-                    children.addAll(crossOver(crossOverMethod, player, playerList.get((playerList.indexOf(player) + 1) % playerList.size())));
+            for (Player player : currentGeneration) {
+                if( currentGeneration.size() > 1) {
+                    newGeneration.addAll(crossOver(crossOverMethod, player, currentGeneration.get((currentGeneration.indexOf(player) + 1) % currentGeneration.size())));
                     break;
                 } else {
-                    children.add(player);
+                    newGeneration.add(player);
                 }
-                children.addAll(playerList);
+                newGeneration.addAll(currentGeneration);
             }
-            for (Player child : children) {
+            for (Player child : newGeneration) {
                 mutate(mutationMethod, child, characteristics, Pm);
             }
-            children.removeAll(toRemove);
-            children.addAll(toAdd);
-            playerList = select(selection, children, K, M);
-            children.clear();
-            toAdd.clear();
-            toRemove.clear();
-        } while( evaluator.evaluate(start, parameterMillis) );
+            filterByImplementation(implementation, newGeneration, currentGeneration, N);
+            currentGeneration = select(selection, newGeneration, K, M);
+            newGeneration.clear();
+        } while( evaluator != null && evaluator.evaluate(start, parameterMillis) );
 
-        return playerList.get(0);
+        return currentGeneration.get(0);
     }
 
-    private static List<Player> select(String selectionMethod, List<Player> children, int K, Integer M) {
+    private void filterByImplementation( String implementation, List<Player> newGeneration, List<Player> currentGeneration, int N ) {
+        switch (implementation.toUpperCase()) {
+            case "FILL_PARENT":
+                
+            case "FILL_ALL":
+        }
+    }
+
+    private List<Player> select(String selectionMethod, List<Player> children, int K, Integer M) {
         List<Player> playerList = new ArrayList<>();
+        Elite elite = new Elite();
+        Roulette roulette = new Roulette();
+        Ranking ranking = new Ranking();
+        Universal universal = new Universal();
+        ProbabilisticTournament probabilisticTournament = new ProbabilisticTournament();
+        DeterministicTournament deterministicTournament = new DeterministicTournament();
         switch (selectionMethod.toUpperCase()) {
             case "ELITE":
-                playerList = Elite.solve( children, K );
+                playerList = elite.solve( children, K );
                 break;
             case "ROULETTE":
-                playerList = Roulette.solve(children, K);
+                playerList = roulette.solve(children, K);
                 break;
             case "RANKING":
-                playerList = Ranking.solve(children, K);
+                playerList = ranking.solve(children, K);
                 break;
             case "UNIVERSAL":
-                playerList = Universal.solve(children, K);
+                playerList = universal.solve(children, K);
                 break;
             case "PROBABILISTIC_TOURNAMENT":
-                playerList = ProbabilisticTournament.solve(children, K);
+                playerList = probabilisticTournament.solve(children, K);
                 break;
             case "DETERMINISTIC_TOURNAMENT":
-                playerList = DeterministicTournament.solve(children, K, M);
+                playerList = deterministicTournament.solve(children, K, M);
                 break;
         }
         return playerList;
     }
 
-    private static List<Player> crossOver( String crossoverMethod, Player player1, Player player2 ) {
+    private List<Player> crossOver( String crossoverMethod, Player player1, Player player2 ) {
         Random random = new Random(System.currentTimeMillis());
         List<Player> children = new ArrayList<>();
+        Crossovers crossovers = new Crossovers();
         switch (crossoverMethod.toUpperCase()) {
             case "SINGLE_POINT":
-                children.addAll(Crossovers.singlePoint(player1, player2 , random));
+                children.addAll(crossovers.singlePoint(player1, player2 , random));
                 break;
             case "DOUBLE_POINT":
-                children.addAll(Crossovers.doublePoint(player1, player2 , random));
+                children.addAll(crossovers.doublePoint(player1, player2 , random));
                 break;
             case "ANNULAR":
-                children.addAll(Crossovers.annular(player1, player2 , random));
+                children.addAll(crossovers.annular(player1, player2 , random));
                 break;
             case "UNIFORM":
-                children.addAll(Crossovers.uniform(player1, player2 , random));
+                children.addAll(crossovers.uniform(player1, player2 , random));
                 break;
         }
         return children;
     }
 
-    private static void mutate( String mutationMethod, Player player, Characteristics characteristics, double Pm) {
+    private void mutate( String mutationMethod, Player player, Characteristics characteristics, double Pm) {
+        Mutations mutations = new Mutations();
         switch (mutationMethod.toUpperCase()) {
             case "SIMPLE_MUTATION":
-                Mutations.simple(player, characteristics, Pm);
+                mutations.simple(player, characteristics, Pm);
                 break;
             case "LIMITED_MULTIGEN":
-                Mutations.limitedMultigen(player, characteristics, Pm);
+                mutations.limitedMultigen(player, characteristics, Pm);
                 break;
             case "UNIFORM_MULTIGEN":
-                Mutations.uniformMultigen(player, characteristics, Pm);
+                mutations.uniformMultigen(player, characteristics, Pm);
                 break;
             case "COMPLETE_MUTATION":
-                Mutations.complete(player, characteristics, Pm);
+                mutations.complete(player, characteristics, Pm);
                 break;
         }
     }
 
-    private static Evaluator evaluator(String evaluatorValue) {
+    private Evaluator evaluator(String evaluatorValue) {
         switch (evaluatorValue.toUpperCase()) {
             case "TIME":
                 return new EvaluateTime();

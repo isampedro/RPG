@@ -3,7 +3,7 @@ import java.util.List;
 import java.util.Random;
 
 public class Universal {
-    public static List<Player> solve(List<Player> players, int K) {
+    public List<Player> solve(List<Player> players, int K) {
         if( K <= 0 ) {
             System.exit(1);
         }

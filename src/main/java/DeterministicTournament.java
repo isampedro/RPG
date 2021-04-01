@@ -1,7 +1,7 @@
 import java.util.*;
 
 public class DeterministicTournament {
-    public static List<Player> solve( List<Player> players, int K, int M) {
+    public List<Player> solve( List<Player> players, int K, int M) {
         if( K <= 0 ) {
             System.exit(1);
         }

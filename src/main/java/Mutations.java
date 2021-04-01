@@ -1,7 +1,7 @@
 import java.util.Random;
 
 public class Mutations {
-    public static void simple(Player player, Characteristics characteristics, double Pm) {
+    public void simple(Player player, Characteristics characteristics, double Pm) {
         Random random = new Random(System.currentTimeMillis());
         int gen, idValue;
         double i = random.nextDouble();
@@ -15,7 +15,7 @@ public class Mutations {
         }
     }
 
-    public static void limitedMultigen( Player player, Characteristics characteristics, double Pm) {
+    public void limitedMultigen( Player player, Characteristics characteristics, double Pm) {
         Random random = new Random(System.currentTimeMillis());
         int gensQ = random.nextInt(6) + 1, gen, idValue;
         double j;
@@ -33,7 +33,7 @@ public class Mutations {
         }
     }
 
-    public static void uniformMultigen( Player player, Characteristics characteristics, double Pm) {
+    public void uniformMultigen( Player player, Characteristics characteristics, double Pm) {
         Random random = new Random(System.currentTimeMillis());
         int idValue;
         double j;
@@ -49,7 +49,7 @@ public class Mutations {
         }
     }
 
-    public static void complete( Player player, Characteristics characteristics, double Pm) {
+    public void complete( Player player, Characteristics characteristics, double Pm) {
         Random random = new Random(System.currentTimeMillis());
         int idValue;
         double j;
@@ -65,7 +65,7 @@ public class Mutations {
         }
     }
 
-    private static void mutatePlayer( Player player, Characteristics characteristics, int idValue, int index ) {
+    private void mutatePlayer( Player player, Characteristics characteristics, int idValue, int index ) {
         Item selectedItem;
         Random random = new Random(System.currentTimeMillis());
 

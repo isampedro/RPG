@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 public class Crossovers {
-    public static List<Player> singlePoint(Player p1, Player p2, Random random) {
+    public List<Player> singlePoint(Player p1, Player p2, Random random) {
         int listValue;
         List<Player> children = new ArrayList<>();
 
@@ -40,7 +40,7 @@ public class Crossovers {
         return children;
     }
 
-    public static List<Player> doublePoint(Player p1, Player p2, Random random) {
+    public List<Player> doublePoint(Player p1, Player p2, Random random) {
         int rand1, rand2, aux;
         double auxHeight;
         List<Player> children = new ArrayList<>();
@@ -72,7 +72,7 @@ public class Crossovers {
         return children;
     }
 
-    public static List<Player> annular(Player p1, Player p2, Random random) {
+    public List<Player> annular(Player p1, Player p2, Random random) {
         int index, L;
         double auxHeight;
         List<Player> children = new ArrayList<>();
@@ -99,7 +99,7 @@ public class Crossovers {
         return children;
     }
 
-    public static List<Player> uniform(Player p1, Player p2, Random random) {
+    public List<Player> uniform(Player p1, Player p2, Random random) {
         boolean rand;
         double auxHeight;
         List<Player> children = new ArrayList<>();

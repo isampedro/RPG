@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 public class Ranking {
-    public static List<Player> solve(List<Player> players, int K) {
+    public List<Player> solve(List<Player> players, int K) {
         if( K <= 0 ) {
             System.exit(1);
         }
