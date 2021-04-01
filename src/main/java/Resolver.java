@@ -3,11 +3,12 @@ import java.util.List;
 import java.util.Random;
 
 public class Resolver {
-    public static Player solve( Characteristics characteristics, int K, Integer M, String selection, String crossOverMethod, String mutationMethod ) {
+    public static Player solve( Characteristics characteristics, int K, Integer M, String selection, String crossOverMethod, String mutationMethod, String evaluatorValue, Long parameterMillis ) {
         List<Player> playerList = new ArrayList<>();
         playerList.add(new Player(characteristics.getPlayerClass()));
         Random random = new Random(System.currentTimeMillis());
         List<Player> children = new ArrayList<>(), toAdd = new ArrayList<>(), toRemove = new ArrayList<>();
+        Evaluator evaluator = evaluator(evaluatorValue, parameterMillis);
         long start = System.currentTimeMillis();
         do {
             for (Player player : playerList) {
@@ -30,7 +31,7 @@ public class Resolver {
             children.clear();
             toAdd.clear();
             toRemove.clear();
-        } while( System.currentTimeMillis() - start < 10000 );
+        } while( evaluator.evaluate(start, parameterMillis) );
 
         return playerList.get(0);
     }
@@ -89,5 +90,15 @@ public class Resolver {
                 break;
         }
         return  children;
+    }
+
+    private static Evaluator evaluator(String evaluatorValue, Long parameterMillis) {
+        switch (evaluatorValue.toUpperCase()) {
+            case "TIME":
+                return new EvaluateTime();
+            default:
+                return null;
+        }
+
     }
 }
