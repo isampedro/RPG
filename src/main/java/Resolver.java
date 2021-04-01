@@ -5,7 +5,7 @@ import java.util.Random;
 public class Resolver {
     public static Player solve( Characteristics characteristics, int K, Integer M, String selection, String crossOverMethod, String mutationMethod, String evaluatorValue, Long parameterMillis, double Pm ) {
         List<Player> playerList = new ArrayList<>();
-        playerList.add(new Player(characteristics.getPlayerClass()));
+        playerList.add(new Player(characteristics.getPlayerClass(), 0));
         Random random = new Random(System.currentTimeMillis());
         List<Player> children = new ArrayList<>(), toAdd = new ArrayList<>(), toRemove = new ArrayList<>();
         Evaluator evaluator = evaluator(evaluatorValue);

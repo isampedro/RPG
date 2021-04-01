@@ -12,28 +12,28 @@ public class Crossovers {
 
         switch (listValue+1) {
             case 1:
-                children.add(new Player(p1.getPlayerClass(), p1.getHeight(), p2.getWeapon(), p1.getBoots(), p1.getHelmet(), p1.getGloves(), p1.getArmor(), p1));
-                children.add(new Player(p1.getPlayerClass(), p2.getHeight(), p1.getWeapon(), p2.getBoots(), p2.getHelmet(), p2.getGloves(), p2.getArmor(), p1));
+                children.add(new Player(p1.getPlayerClass(), p1.getHeight(), p2.getWeapon(), p1.getBoots(), p1.getHelmet(), p1.getGloves(), p1.getArmor(), p1, p1.getGeneration() + 1));
+                children.add(new Player(p1.getPlayerClass(), p2.getHeight(), p1.getWeapon(), p2.getBoots(), p2.getHelmet(), p2.getGloves(), p2.getArmor(), p1, p1.getGeneration() + 1));
                 break;
             case 2:
-                children.add(new Player(p1.getPlayerClass(), p1.getHeight(), p2.getWeapon(), p2.getBoots(), p1.getHelmet(), p1.getGloves(), p1.getArmor(), p1));
-                children.add(new Player(p2.getPlayerClass(), p2.getHeight(), p1.getWeapon(), p1.getBoots(), p2.getHelmet(), p2.getGloves(), p2.getArmor(), p1));
+                children.add(new Player(p1.getPlayerClass(), p1.getHeight(), p2.getWeapon(), p2.getBoots(), p1.getHelmet(), p1.getGloves(), p1.getArmor(), p1, p1.getGeneration() + 1));
+                children.add(new Player(p2.getPlayerClass(), p2.getHeight(), p1.getWeapon(), p1.getBoots(), p2.getHelmet(), p2.getGloves(), p2.getArmor(), p1, p1.getGeneration() + 1));
                 break;
             case 3:
-                children.add(new Player(p1.getPlayerClass(), p1.getHeight(), p2.getWeapon(), p2.getBoots(), p2.getHelmet(), p1.getGloves(), p1.getArmor(), p1));
-                children.add(new Player(p2.getPlayerClass(), p2.getHeight(), p1.getWeapon(), p1.getBoots(), p1.getHelmet(), p2.getGloves(), p2.getArmor(), p1));
+                children.add(new Player(p1.getPlayerClass(), p1.getHeight(), p2.getWeapon(), p2.getBoots(), p2.getHelmet(), p1.getGloves(), p1.getArmor(), p1, p1.getGeneration() + 1));
+                children.add(new Player(p2.getPlayerClass(), p2.getHeight(), p1.getWeapon(), p1.getBoots(), p1.getHelmet(), p2.getGloves(), p2.getArmor(), p1, p1.getGeneration() + 1));
                 break;
             case 4:
-                children.add(new Player(p1.getPlayerClass(), p1.getHeight(), p2.getWeapon(), p2.getBoots(), p2.getHelmet(), p2.getGloves(), p1.getArmor(), p1));
-                children.add(new Player(p2.getPlayerClass(), p2.getHeight(), p1.getWeapon(), p1.getBoots(), p1.getHelmet(), p1.getGloves(), p2.getArmor(), p1));
+                children.add(new Player(p1.getPlayerClass(), p1.getHeight(), p2.getWeapon(), p2.getBoots(), p2.getHelmet(), p2.getGloves(), p1.getArmor(), p1, p1.getGeneration() + 1));
+                children.add(new Player(p2.getPlayerClass(), p2.getHeight(), p1.getWeapon(), p1.getBoots(), p1.getHelmet(), p1.getGloves(), p2.getArmor(), p1, p1.getGeneration() + 1));
                 break;
             case 5:
-                children.add(new Player(p1.getPlayerClass(), p1.getHeight(), p2.getWeapon(), p2.getBoots(), p2.getHelmet(), p2.getGloves(), p2.getArmor(), p1));
-                children.add(new Player(p2.getPlayerClass(), p2.getHeight(), p1.getWeapon(), p1.getBoots(), p1.getHelmet(), p1.getGloves(), p1.getArmor(), p1));
+                children.add(new Player(p1.getPlayerClass(), p1.getHeight(), p2.getWeapon(), p2.getBoots(), p2.getHelmet(), p2.getGloves(), p2.getArmor(), p1, p1.getGeneration() + 1));
+                children.add(new Player(p2.getPlayerClass(), p2.getHeight(), p1.getWeapon(), p1.getBoots(), p1.getHelmet(), p1.getGloves(), p1.getArmor(), p1, p1.getGeneration() + 1));
                 break;
             case 6:
-                children.add(new Player(p1.getPlayerClass(), p2.getHeight(), p2.getWeapon(), p2.getBoots(), p2.getHelmet(), p2.getGloves(), p2.getArmor(), p1));
-                children.add(new Player(p2.getPlayerClass(), p1.getHeight(), p1.getWeapon(), p1.getBoots(), p1.getHelmet(), p1.getGloves(), p1.getArmor(), p1));
+                children.add(new Player(p1.getPlayerClass(), p2.getHeight(), p2.getWeapon(), p2.getBoots(), p2.getHelmet(), p2.getGloves(), p2.getArmor(), p1, p1.getGeneration() + 1));
+                children.add(new Player(p2.getPlayerClass(), p1.getHeight(), p1.getWeapon(), p1.getBoots(), p1.getHelmet(), p1.getGloves(), p1.getArmor(), p1, p1.getGeneration() + 1));
                 break;
         }
 
@@ -44,7 +44,7 @@ public class Crossovers {
         int rand1, rand2, aux;
         double auxHeight;
         List<Player> children = new ArrayList<>();
-        Player child1 = new Player(p1), child2 = new Player(p2);
+        Player child1 = new Player(p1, p1.getGeneration() + 1), child2 = new Player(p2, p2.getGeneration() + 1);
         Item auxItem;
 
         rand1 = random.nextInt(6);
@@ -76,7 +76,7 @@ public class Crossovers {
         int index, L;
         double auxHeight;
         List<Player> children = new ArrayList<>();
-        Player child1 = new Player(p1), child2 = new Player(p2);
+        Player child1 = new Player(p1, p1.getGeneration() + 1), child2 = new Player(p2, p2.getGeneration() + 1);
         Item auxItem;
 
         index = random.nextInt(6);
@@ -103,7 +103,7 @@ public class Crossovers {
         boolean rand;
         double auxHeight;
         List<Player> children = new ArrayList<>();
-        Player child1 = new Player(p1), child2 = new Player(p2);
+        Player child1 = new Player(p1, p1.getGeneration() + 1), child2 = new Player(p2, p2.getGeneration() + 1);
         Item auxItem;
 
         for (int i = 1; i <= 6; i++) {

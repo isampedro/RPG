@@ -8,12 +8,13 @@ public class Main {
     public static void main( String[] args ) throws IOException {
         int MAX_LINES = 100000;
         Characteristics characteristics = new Characteristics("warrior", parseFile("allitems/armas.tsv", MAX_LINES, ItemType.WEAPON), parseFile("allitems/cascos.tsv", MAX_LINES, ItemType.HELMET),
-                parseFile("allitems/guantes.tsv", MAX_LINES, ItemType.GLOVES), parseFile("allitems/pecheras.tsv", MAX_LINES, ItemType.ARMOR), parseFile("allitems/botas.tsv", MAX_LINES, ItemType.BOOTS), 1.6 );
+                parseFile("allitems/guantes.tsv", MAX_LINES, ItemType.GLOVES), parseFile("allitems/pecheras.tsv", MAX_LINES, ItemType.ARMOR), parseFile("allitems/botas.tsv", MAX_LINES, ItemType.BOOTS), 1.6);
 
-        Player winner = Resolver.solve(characteristics, 10, 4, "Deterministic_Tournament", "single_point",
+        Player winner = Resolver.solve(characteristics, 10, 4, "Elite", "single_point",
                 "complete_mutation", "TIME", (long) 10000, 0.7);
-        System.out.println("Player:\n" + winner );
+        System.out.println("Player:\n" + winner);
         System.out.println("Performance: " + winner.getPerformance());
+        System.out.println("Generation: " + winner.getGeneration());
         System.out.println("All done!");
     }
 

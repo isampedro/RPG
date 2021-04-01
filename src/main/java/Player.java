@@ -3,8 +3,9 @@ public class Player {
     private double height;
     private Item weapon, boots, helmet, gloves, armor;
     private Player father;
+    private int generation;
 
-    public Player(Player player) {
+    public Player(Player player, int generation) {
         this.playerClass = player.playerClass;
         this.height = player.height;
         this.weapon = player.weapon;
@@ -13,9 +14,10 @@ public class Player {
         this.gloves = player.gloves;
         this.armor = player.armor;
         this.father = player;
+        this.generation = generation;
     }
 
-    public Player(Classes playerClass) {
+    public Player(Classes playerClass, int generation) {
         this.playerClass = playerClass;
         weapon = new Item(0,0,0,0,0,ItemType.WEAPON);
         boots = new Item(0,0,0,0,0,ItemType.BOOTS);
@@ -23,9 +25,10 @@ public class Player {
         gloves = new Item(0,0,0,0,0,ItemType.GLOVES);
         armor = new Item(0,0,0,0,0,ItemType.ARMOR);
         height = 1.3;
+        this.generation = generation;
     }
 
-    public Player(Classes playerClass, double height, Item weapon, Item boots, Item helmet, Item gloves, Item armor) {
+    public Player(Classes playerClass, double height, Item weapon, Item boots, Item helmet, Item gloves, Item armor, int generation) {
         this.playerClass = playerClass;
         this.height = height;
         this.weapon = weapon;
@@ -33,9 +36,10 @@ public class Player {
         this.helmet = helmet;
         this.gloves = gloves;
         this.armor = armor;
+        this.generation = generation;
     }
 
-    public Player(Classes playerClass, double height, Item weapon, Item boots, Item helmet, Item gloves, Item armor, Player father) {
+    public Player(Classes playerClass, double height, Item weapon, Item boots, Item helmet, Item gloves, Item armor, Player father, int generation) {
         this.playerClass = playerClass;
         this.height = height;
         this.weapon = weapon;
@@ -44,6 +48,7 @@ public class Player {
         this.gloves = gloves;
         this.armor = armor;
         this.father = father;
+        this.generation = generation;
     }
 
     public Player getFather() {
@@ -78,24 +83,28 @@ public class Player {
         return armor;
     }
 
-    public Player putWeapon( Item weapon ) {
-        return new Player(playerClass, height, weapon, boots, helmet, gloves, armor);
+    public int getGeneration() {
+        return generation;
+    }
+
+    public Player putWeapon(Item weapon ) {
+        return new Player(playerClass, height, weapon, boots, helmet, gloves, armor, generation);
     }
 
     public Player putBoots( Item boots ) {
-        return new Player(playerClass, height, weapon, boots, helmet, gloves, armor);
+        return new Player(playerClass, height, weapon, boots, helmet, gloves, armor, generation);
     }
 
     public Player putHelmet( Item helmet ) {
-        return new Player(playerClass, height, weapon, boots, helmet, gloves, armor);
+        return new Player(playerClass, height, weapon, boots, helmet, gloves, armor, generation);
     }
 
     public Player putGloves( Item gloves ) {
-        return new Player(playerClass, height, weapon, boots, helmet, gloves, armor);
+        return new Player(playerClass, height, weapon, boots, helmet, gloves, armor, generation);
     }
 
     public Player putArmor( Item armor ) {
-        return new Player(playerClass, height, weapon, boots, helmet, gloves, armor);
+        return new Player(playerClass, height, weapon, boots, helmet, gloves, armor, generation);
     }
 
     public double getStrength() {
@@ -148,7 +157,7 @@ public class Player {
     }
 
     public Player putHeight(double height) {
-        return new Player(playerClass, height, weapon, boots, helmet, gloves, armor);
+        return new Player(playerClass, height, weapon, boots, helmet, gloves, armor, generation);
     }
 
     public Item getByIndex( int index ) {
