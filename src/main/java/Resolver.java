@@ -3,12 +3,12 @@ import java.util.List;
 import java.util.Random;
 
 public class Resolver {
-    public static Player solve( Characteristics characteristics, int K, Integer M, String selection, String crossOverMethod, String mutationMethod, String evaluatorValue, Long parameterMillis ) {
+    public static Player solve( Characteristics characteristics, int K, Integer M, String selection, String crossOverMethod, String mutationMethod, String evaluatorValue, Long parameterMillis, double Pm ) {
         List<Player> playerList = new ArrayList<>();
         playerList.add(new Player(characteristics.getPlayerClass()));
         Random random = new Random(System.currentTimeMillis());
         List<Player> children = new ArrayList<>(), toAdd = new ArrayList<>(), toRemove = new ArrayList<>();
-        Evaluator evaluator = evaluator(evaluatorValue, parameterMillis);
+        Evaluator evaluator = evaluator(evaluatorValue);
         long start = System.currentTimeMillis();
         do {
             for (Player player : playerList) {
@@ -18,12 +18,10 @@ public class Resolver {
                 } else {
                     children.add(player);
                 }
+                children.addAll(playerList);
             }
             for (Player child : children) {
-                if( random.nextBoolean() ) {
-                    toRemove.add(child);
-                    toAdd.addAll(mutate(mutationMethod, child, characteristics, K));
-                }
+                mutate(mutationMethod, child, characteristics, Pm);
             }
             children.removeAll(toRemove);
             children.addAll(toAdd);
@@ -81,18 +79,24 @@ public class Resolver {
         return children;
     }
 
-    private static List<Player> mutate( String mutationMethod, Player player, Characteristics characteristics, int K) {
-        Random random = new Random(System.currentTimeMillis());
-        List<Player> children = new ArrayList<>();
+    private static void mutate( String mutationMethod, Player player, Characteristics characteristics, double Pm) {
         switch (mutationMethod.toUpperCase()) {
             case "SIMPLE_MUTATION":
-                children.addAll(Mutations.simple(random, player, characteristics, K));
+                Mutations.simple(player, characteristics, Pm);
+                break;
+            case "LIMITED_MULTIGEN":
+                Mutations.limitedMultigen(player, characteristics, Pm);
+                break;
+            case "UNIFORM_MULTIGEN":
+                Mutations.uniformMultigen(player, characteristics, Pm);
+                break;
+            case "COMPLETE_MUTATION":
+                Mutations.complete(player, characteristics, Pm);
                 break;
         }
-        return  children;
     }
 
-    private static Evaluator evaluator(String evaluatorValue, Long parameterMillis) {
+    private static Evaluator evaluator(String evaluatorValue) {
         switch (evaluatorValue.toUpperCase()) {
             case "TIME":
                 return new EvaluateTime();
