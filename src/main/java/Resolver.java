@@ -7,6 +7,7 @@ public class Resolver {
                                 String evaluatorValue, Long parameterMillis, double Pm, String implementation, String implementationMethod, int N, int maxGen, int startingParents ) {
         List<Player> currentGeneration,newGeneration = new ArrayList<>(), population = new ArrayList<>();
         Evaluator evaluator = evaluator(evaluatorValue);
+        double minimumFitness, averageFitness;
         Random random = new Random(System.currentTimeMillis());
         for( int i = 0; i < startingParents; i++ ) {
             population.add(new Player(characteristics.getPlayerClass(), random.nextDouble()*(2-1.3) + 1.3, characteristics.getWeapons().get(random.nextInt(characteristics.getWeapons().size())),
@@ -15,9 +16,20 @@ public class Resolver {
                     0));
         }
         currentGeneration = new ArrayList<>(population);
-        int randomIndex;
         long start = System.currentTimeMillis(), generation = -1;
         do {
+            minimumFitness = currentGeneration.get(0).getPerformance();
+            averageFitness = 0;
+            for (Player player : currentGeneration) {
+                if( minimumFitness > player.getPerformance() ) {
+                    minimumFitness = player.getPerformance();
+                }
+                averageFitness += player.getPerformance();
+            }
+            averageFitness /= currentGeneration.size();
+            System.out.println(averageFitness);
+            System.out.println(minimumFitness);
+
             generation++;
             for( int i = 0; i < currentGeneration.size(); i+=2) {
                 newGeneration.addAll(crossOver(crossOverMethod, currentGeneration.get(i), currentGeneration.get(i+1)));
