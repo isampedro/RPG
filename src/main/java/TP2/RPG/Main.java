@@ -49,8 +49,8 @@ public class Main {
                     evaluator, maxMillis, Pm, implementation, firstReplacementMethod, N, maxGenerations,
                     initialPopulation, A, B, secondSelectionMethod, secondReplacementMethod );
         } catch (IOException | ParseException e) {
-            e.printStackTrace();
             System.out.println("There was an error reading the JSON file");
+            e.printStackTrace();
             System.exit(1);
         }
     }
