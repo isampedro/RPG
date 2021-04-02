@@ -66,7 +66,7 @@ public class Main {
         while( (line = reader.readLine()) != null && lines < maxLines ) {
             index = 0;
             scanner = new Scanner(line);
-            scanner.useDelimiter("\\t|\\s");
+            scanner.useDelimiter("\\t|\\s|;");
             while (scanner.hasNext()) {
                 attribute = scanner.next();
                 switch (index) {
