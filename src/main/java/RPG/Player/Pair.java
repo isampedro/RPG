@@ -1,3 +1,5 @@
+package RPG.Player;
+
 public class Pair {
     private final double relativeFitness;
     private final Player player;

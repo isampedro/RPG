@@ -1,3 +1,5 @@
+package RPG.Player;
+
 public enum Classes {
     WARRIOR(0.6, 0.6),
     ARCHER(0.9,0.1),

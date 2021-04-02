@@ -1,3 +1,5 @@
+package RPG.Player;
+
 public class Player {
     private final Classes playerClass;
     private double height;

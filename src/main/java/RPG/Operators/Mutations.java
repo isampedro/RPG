@@ -1,3 +1,9 @@
+package RPG.Operators;
+
+import RPG.Characteristics;
+import RPG.Player.Item;
+import RPG.Player.Player;
+
 import java.util.Random;
 
 public class Mutations {

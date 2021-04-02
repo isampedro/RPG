@@ -1,3 +1,8 @@
+package RPG;
+
+import RPG.Player.Classes;
+import RPG.Player.Item;
+
 import java.util.List;
 
 public class Characteristics {

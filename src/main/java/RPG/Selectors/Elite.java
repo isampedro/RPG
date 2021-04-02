@@ -1,3 +1,7 @@
+package RPG.Selectors;
+
+import RPG.Player.Player;
+
 import java.util.*;
 
 public class Elite {

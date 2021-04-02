@@ -1,11 +1,21 @@
+package RPG;
+
+import RPG.Evaluators.EvaluateGenQ;
+import RPG.Evaluators.EvaluateTime;
+import RPG.Evaluators.Evaluator;
+import RPG.Operators.Crossovers;
+import RPG.Operators.Mutations;
+import RPG.Player.Player;
+import RPG.Selectors.*;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class Resolver {
-    public List<Player> solve( Characteristics characteristics, int K, Integer M, String selection, String crossOverMethod, String mutationMethod,
-                                String evaluatorValue, Long parameterMillis, double Pm, String implementation, String replacement, int N,
-                               int maxGen, int startingParents, double A, double B, String secondSelection, String secondReplacement ) {
+    public List<Player> solve(Characteristics characteristics, int K, Integer M, String selection, String crossOverMethod, String mutationMethod,
+                              String evaluatorValue, Long parameterMillis, double Pm, String implementation, String replacement, int N,
+                              int maxGen, int startingParents, double A, double B, String secondSelection, String secondReplacement ) {
         List<Player> currentGeneration,newGeneration = new ArrayList<>(), population = new ArrayList<>();
         Evaluator evaluator = evaluator(evaluatorValue);
         double minimumFitness, averageFitness;

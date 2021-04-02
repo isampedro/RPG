@@ -1,5 +1,9 @@
+package RPG.Operators;
+
+import RPG.Player.Item;
+import RPG.Player.Player;
+
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 

@@ -1,3 +1,9 @@
+package RPG;
+
+import RPG.Player.Item;
+import RPG.Player.ItemType;
+import RPG.Player.Player;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -13,6 +19,7 @@ public class Main {
                 parseFile("allitems/guantes.tsv", MAX_LINES, ItemType.GLOVES),
                 parseFile("allitems/pecheras.tsv", MAX_LINES, ItemType.ARMOR),
                 parseFile("allitems/botas.tsv", MAX_LINES, ItemType.BOOTS), 1.6);
+
         Resolver resolver = new Resolver();
         List<Player> winners = resolver.solve(characteristics, Integer.parseInt(args[1]), Integer.parseInt(args[2]), args[3], args[4], args[5],
                 args[6], Long.parseLong(args[7]), Double.parseDouble(args[8]), args[9], args[10], Integer.parseInt(args[11]), Integer.parseInt(args[12]), Integer.parseInt(args[13]), Double.parseDouble(args[14]), Double.parseDouble(args[15]), args[16], args[17] );

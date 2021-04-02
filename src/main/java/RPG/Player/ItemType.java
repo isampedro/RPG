@@ -1,3 +1,5 @@
+package RPG.Player;
+
 public enum ItemType {
     WEAPON,
     HELMET,

@@ -1,3 +1,5 @@
+package RPG.Player;
+
 public class Item {
     private final ItemType type;
     private final double strength, agility, expertise, resistance, vitality;
