@@ -1,4 +1,4 @@
-package RPG.Player;
+package TP2.RPG.Player;
 
 public class Pair {
     private final double relativeFitness;

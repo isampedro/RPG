@@ -1,7 +1,7 @@
-package RPG.Operators;
+package TP2.RPG.Operators;
 
-import RPG.Player.Item;
-import RPG.Player.Player;
+import TP2.RPG.Player.Item;
+import TP2.RPG.Player.Player;
 
 import java.util.ArrayList;
 import java.util.List;

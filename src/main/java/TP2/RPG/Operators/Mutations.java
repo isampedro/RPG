@@ -1,8 +1,8 @@
-package RPG.Operators;
+package TP2.RPG.Operators;
 
-import RPG.Characteristics;
-import RPG.Player.Item;
-import RPG.Player.Player;
+import TP2.RPG.Characteristics;
+import TP2.RPG.Player.Item;
+import TP2.RPG.Player.Player;
 
 import java.util.Random;
 

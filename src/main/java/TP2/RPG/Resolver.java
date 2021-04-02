@@ -1,12 +1,12 @@
-package RPG;
+package TP2.RPG;
 
-import RPG.Evaluators.EvaluateGenQ;
-import RPG.Evaluators.EvaluateTime;
-import RPG.Evaluators.Evaluator;
-import RPG.Operators.Crossovers;
-import RPG.Operators.Mutations;
-import RPG.Player.Player;
-import RPG.Selectors.*;
+import TP2.RPG.Evaluators.EvaluateGenQ;
+import TP2.RPG.Evaluators.EvaluateTime;
+import TP2.RPG.Evaluators.Evaluator;
+import TP2.RPG.Operators.Crossovers;
+import TP2.RPG.Operators.Mutations;
+import TP2.RPG.Player.Player;
+import TP2.RPG.Selectors.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +44,7 @@ public class Resolver {
 
             generation++;
             for( int i = 0; i < currentGeneration.size(); i+=2) {
-                newGeneration.addAll(crossOver(crossOverMethod, currentGeneration.get(i), currentGeneration.get(i+1)));
+                newGeneration.addAll(crossOver(crossOverMethod, currentGeneration.get(i), currentGeneration.get((i+1) % currentGeneration.size())));
             }
             for (Player child : newGeneration) {
                 mutate(mutationMethod, child, characteristics, Pm);

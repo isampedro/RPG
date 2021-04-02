@@ -1,4 +1,4 @@
-package RPG.Player;
+package TP2.RPG.Player;
 
 public enum Classes {
     WARRIOR(0.6, 0.6),

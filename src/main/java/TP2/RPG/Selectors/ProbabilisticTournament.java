@@ -1,6 +1,6 @@
-package RPG.Selectors;
+package TP2.RPG.Selectors;
 
-import RPG.Player.Player;
+import TP2.RPG.Player.Player;
 
 import java.util.ArrayList;
 import java.util.List;

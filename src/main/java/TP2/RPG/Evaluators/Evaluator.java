@@ -1,4 +1,4 @@
-package RPG.Evaluators;
+package TP2.RPG.Evaluators;
 
 public interface Evaluator {
     boolean evaluate( long startTime, long maxMillis, long actualGen, long maxGen );

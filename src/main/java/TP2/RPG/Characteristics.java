@@ -1,7 +1,7 @@
-package RPG;
+package TP2.RPG;
 
-import RPG.Player.Classes;
-import RPG.Player.Item;
+import TP2.RPG.Player.Classes;
+import TP2.RPG.Player.Item;
 
 import java.util.List;
 

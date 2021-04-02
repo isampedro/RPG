@@ -1,4 +1,4 @@
-package RPG.Evaluators;
+package TP2.RPG.Evaluators;
 
 public class EvaluateGenQ implements Evaluator{
     @Override
