@@ -21,6 +21,6 @@
   "implementation": "fill_all",
   "initialPopulation": 100,
   "evaluator": "gen_q",
-  "maxGenerations": 1000,
+  "maxGenerations": 100,
   "maxMillis": 60000
 }

@@ -15,7 +15,7 @@ import java.util.*;
 
 public class Main {
 
-    public static void main( String[] args ) throws IOException {
+    public static void main( String[] args ) {
         JSONParser parser = new JSONParser();
 
         try (Reader reader = new FileReader("configs.json")) {
