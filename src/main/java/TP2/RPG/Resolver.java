@@ -14,10 +14,10 @@ public class Resolver {
     public List<Player> solve(Characteristics characteristics, int K, Integer M, String selection, String crossOverMethod, String mutationMethod,
                               String evaluatorValue, Long parameterMillis, double Pm, String implementation, String replacement, int N,
                               int maxGen, int startingParents, double A, double B, String secondSelection, String secondReplacement, int maxRoundsNoChange,
-                              double structureVariety, double delta) {
-        List<Player> currentGeneration,newGeneration = new ArrayList<>(), population = new ArrayList<>(), auxGeneration;
+                              double structureVariety, double delta, int acceptableSolution ) {
+        List<Player> currentGeneration,newGeneration = new ArrayList<>(), population = new ArrayList<>(), auxGeneration, lastGeneration;
         Evaluator evaluator = evaluator(evaluatorValue);
-        double minimumFitness, averageFitness;
+        double minimumFitness, averageFitness, maximumFitness;
         Random random = new Random(System.currentTimeMillis());
         for( int i = 0; i < startingParents; i++ ) {
             population.add(new Player(characteristics.getPlayerClass(), random.nextDouble()*(2-1.3) + 1.3, characteristics.getWeapons().get(random.nextInt(characteristics.getWeapons().size())),
@@ -25,16 +25,22 @@ public class Resolver {
                     characteristics.getGloves().get(random.nextInt(characteristics.getGloves().size())), characteristics.getArmors().get(random.nextInt(characteristics.getArmors().size())),
                     0));
         }
+        double similarity;
+        boolean isSimilar;
         long start = System.currentTimeMillis(), generation = -1;
         int replaceSize1 = (int) (N*B), replaceSize2 = N - replaceSize1;
         int selectionSize1 = (int) (K*A), selectionSize2 = K - selectionSize1;
         currentGeneration = selectMultiple(selection, secondSelection, selectionSize1, selectionSize2, population, M);
         do {
             minimumFitness = currentGeneration.get(0).getPerformance();
+            maximumFitness = currentGeneration.get(0).getPerformance();
             averageFitness = 0;
             for (Player player : currentGeneration) {
                 if( minimumFitness > player.getPerformance() ) {
                     minimumFitness = player.getPerformance();
+                }
+                if( maximumFitness < player.getPerformance() ) {
+                    maximumFitness = player.getPerformance();
                 }
                 averageFitness += player.getPerformance();
             }
@@ -51,8 +57,7 @@ public class Resolver {
             newGeneration = replace(implementation, replacement, secondReplacement, replaceSize1, replaceSize2, N, newGeneration, currentGeneration, M);
             auxGeneration = selectMultiple(selection, secondSelection, selectionSize1, selectionSize2, newGeneration, M);
 
-            double similarity = 0;
-            boolean isSimilar;
+            similarity = 0;
 
             for (Player player : auxGeneration) {
                 isSimilar = false;
@@ -68,12 +73,44 @@ public class Resolver {
                 }
             }
 
-            System.out.println(averageFitness + " " + minimumFitness + " " + (1-(similarity/auxGeneration.size())) + " ");
+            System.out.println(averageFitness + " " + minimumFitness + " " + (1-(similarity/auxGeneration.size())) + " " + maximumFitness + " ");
 
+            lastGeneration = currentGeneration;
             currentGeneration = auxGeneration;
             newGeneration.clear();
-        } while( evaluator != null && evaluator.evaluate(start, parameterMillis, generation, maxGen, currentGeneration, maxRoundsNoChange, structureVariety, delta) );
+        } while( evaluator != null && evaluator.evaluate(start, parameterMillis, generation, maxGen, currentGeneration, maxRoundsNoChange, structureVariety, delta, acceptableSolution) );
 
+        minimumFitness = currentGeneration.get(0).getPerformance();
+        maximumFitness = currentGeneration.get(0).getPerformance();
+
+        for (Player player : currentGeneration) {
+            if( minimumFitness > player.getPerformance() ) {
+                minimumFitness = player.getPerformance();
+            }
+            if( maximumFitness < player.getPerformance() ) {
+                maximumFitness = player.getPerformance();
+            }
+            averageFitness += player.getPerformance();
+        }
+        averageFitness /= currentGeneration.size();
+
+        similarity = 0;
+
+        for (Player player : lastGeneration) {
+            isSimilar = false;
+            for( int i = 0; i < currentGeneration.size() && !isSimilar; i++ ) {
+                if( player.isSimilar(currentGeneration.get(i), delta)) {
+                    isSimilar = true;
+                    currentGeneration.remove(i);
+                }
+            }
+
+            if( isSimilar ) {
+                similarity++;
+            }
+        }
+
+        System.out.println(averageFitness + " " + minimumFitness + " " + (1-(similarity/lastGeneration.size())) + " " + maximumFitness + " ");
         return currentGeneration;
     }
 
@@ -201,6 +238,8 @@ public class Resolver {
                 return new EvaluateMax();
             case "STRUCTURE":
                 return new EvaluateStructure();
+            case "ACCEPTABLE_SOLUTION":
+                return new EvaluateAcceptableSolution();
             default:
                 System.out.println("The evaluator doesn't have a correct name.");
                 System.exit(1);

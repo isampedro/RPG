@@ -9,7 +9,7 @@ public class EvaluateStructure implements Evaluator{
     private List<Player> previousGeneration;
     private int generationsCounter = 0;
     @Override
-    public boolean evaluate(long startTime, long maxMillis, long actualGen, long maxGen, List<Player> currentGeneration, int maxRoundsNoChange, double structureVariety, double delta) {
+    public boolean evaluate(long startTime, long maxMillis, long actualGen, long maxGen, List<Player> currentGeneration, int maxRoundsNoChange, double structureVariety, double delta, int acceptableSolution) {
         if( previousGeneration == null ) {
             previousGeneration = new ArrayList<>(currentGeneration);
             return true;

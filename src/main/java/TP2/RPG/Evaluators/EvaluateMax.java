@@ -9,7 +9,7 @@ public class EvaluateMax implements Evaluator {
     private Player max;
 
     @Override
-    public boolean evaluate(long startTime, long maxMillis, long actualGen, long maxGen, List<Player> currentGeneration, int maxRoundsNoChange, double structureVariety, double delta) {
+    public boolean evaluate(long startTime, long maxMillis, long actualGen, long maxGen, List<Player> currentGeneration, int maxRoundsNoChange, double structureVariety, double delta, int acceptableSolution) {
         Player aux = currentGeneration.get(0);
         for (Player player : currentGeneration) {
             if( aux.getPerformance() < player.getPerformance() ) {

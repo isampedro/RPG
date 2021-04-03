@@ -42,12 +42,13 @@ public class Main {
             int N = ((Long) jsonObject.get("N")).intValue(), K = ((Long) jsonObject.get("K")).intValue(), M = ((Long) jsonObject.get("deterministicM")).intValue();
             int initialPopulation = ((Long) jsonObject.get("initialPopulation")).intValue(), maxGenerations = ((Long) jsonObject.get("maxGenerations")).intValue();
             long maxMillis = (long) jsonObject.get("maxMillis");
+            int acceptableSolution = ((Long)jsonObject.get("acceptableSolution")).intValue();
 
             Resolver resolver = new Resolver();
             List<Player> winners = resolver.solve(characteristics, K, M, firstSelectionMethod, crossover, mutation,
                     evaluator, maxMillis, Pm, implementation, firstReplacementMethod, N, maxGenerations,
                     initialPopulation, A, B, secondSelectionMethod, secondReplacementMethod, ((Long) jsonObject.get("contentMaxRounds")).intValue(),
-                    (double) jsonObject.get("structureVariety") ,(double) jsonObject.get("delta"));
+                    (double) jsonObject.get("structureVariety") ,(double) jsonObject.get("delta"), acceptableSolution );
         } catch (IOException | ParseException e) {
             System.out.println("There was an error reading the JSON file");
             e.printStackTrace();
