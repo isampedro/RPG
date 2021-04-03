@@ -13,8 +13,14 @@ public class Item {
         this.vitality = vitality;
     }
 
-    public ItemType getType() {
-        return type;
+    private boolean isSimilar( double itemAbility, double thisAbility, double delta ) {
+        return itemAbility >= thisAbility - delta && itemAbility <= thisAbility + delta;
+    }
+
+    public boolean isSimilar( Item i, double delta ) {
+        return isSimilar( i.strength, strength, delta ) && isSimilar( i.agility, agility, delta )
+                && isSimilar( i.expertise, expertise, delta ) && isSimilar( i.resistance, resistance, delta )
+                && isSimilar( i.vitality, vitality, delta );
     }
 
     public double getStrength() {

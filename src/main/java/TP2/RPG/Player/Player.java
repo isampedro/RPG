@@ -5,7 +5,7 @@ public class Player {
     private double height;
     private Item weapon, boots, helmet, gloves, armor;
     private Player father;
-    private int generation;
+    private final int generation;
 
     public Player(Player player, int generation) {
         this.playerClass = player.playerClass;
@@ -53,10 +53,6 @@ public class Player {
         this.generation = generation;
     }
 
-    public Player getFather() {
-        return father;
-    }
-
     public Classes getPlayerClass() {
         return playerClass;
     }
@@ -87,26 +83,6 @@ public class Player {
 
     public int getGeneration() {
         return generation;
-    }
-
-    public Player putWeapon(Item weapon ) {
-        return new Player(playerClass, height, weapon, boots, helmet, gloves, armor, generation);
-    }
-
-    public Player putBoots( Item boots ) {
-        return new Player(playerClass, height, weapon, boots, helmet, gloves, armor, generation);
-    }
-
-    public Player putHelmet( Item helmet ) {
-        return new Player(playerClass, height, weapon, boots, helmet, gloves, armor, generation);
-    }
-
-    public Player putGloves( Item gloves ) {
-        return new Player(playerClass, height, weapon, boots, helmet, gloves, armor, generation);
-    }
-
-    public Player putArmor( Item armor ) {
-        return new Player(playerClass, height, weapon, boots, helmet, gloves, armor, generation);
     }
 
     public double getStrength() {
@@ -181,6 +157,29 @@ public class Player {
             case 4: gloves = item; break;
             case 5: armor = item; break;
         }
+    }
+
+    public boolean isSimilar( Player player, double delta ) {
+        int countSimilarity = 0;
+        if( player.height <= height + delta && player.height >= height - delta ) {
+            countSimilarity++;
+        }
+        if( weapon.isSimilar(player.weapon, delta) ) {
+            countSimilarity++;
+        }
+        if( boots.isSimilar(player.boots, delta) ) {
+            countSimilarity++;
+        }
+        if( helmet.isSimilar(player.helmet, delta) ) {
+            countSimilarity++;
+        }
+        if( gloves.isSimilar(player.gloves, delta) ) {
+            countSimilarity++;
+        }
+        if( armor.isSimilar(player.armor, delta) ) {
+            countSimilarity++;
+        }
+        return countSimilarity >= 5;
     }
 
     @Override

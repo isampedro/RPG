@@ -1,8 +1,6 @@
 package TP2.RPG;
 
-import TP2.RPG.Evaluators.EvaluateGenQ;
-import TP2.RPG.Evaluators.EvaluateTime;
-import TP2.RPG.Evaluators.Evaluator;
+import TP2.RPG.Evaluators.*;
 import TP2.RPG.Operators.Crossovers;
 import TP2.RPG.Operators.Mutations;
 import TP2.RPG.Player.Player;
@@ -15,8 +13,9 @@ import java.util.Random;
 public class Resolver {
     public List<Player> solve(Characteristics characteristics, int K, Integer M, String selection, String crossOverMethod, String mutationMethod,
                               String evaluatorValue, Long parameterMillis, double Pm, String implementation, String replacement, int N,
-                              int maxGen, int startingParents, double A, double B, String secondSelection, String secondReplacement ) {
-        List<Player> currentGeneration,newGeneration = new ArrayList<>(), population = new ArrayList<>();
+                              int maxGen, int startingParents, double A, double B, String secondSelection, String secondReplacement, int maxRoundsNoChange,
+                              double structureVariety, double delta) {
+        List<Player> currentGeneration,newGeneration = new ArrayList<>(), population = new ArrayList<>(), auxGeneration;
         Evaluator evaluator = evaluator(evaluatorValue);
         double minimumFitness, averageFitness;
         Random random = new Random(System.currentTimeMillis());
@@ -40,7 +39,6 @@ public class Resolver {
                 averageFitness += player.getPerformance();
             }
             averageFitness /= currentGeneration.size();
-            System.out.println(averageFitness + " " + minimumFitness + " ");
 
             generation++;
             for( int i = 0; i < currentGeneration.size(); i+=2) {
@@ -51,9 +49,30 @@ public class Resolver {
             }
             population.addAll(newGeneration);
             newGeneration = replace(implementation, replacement, secondReplacement, replaceSize1, replaceSize2, N, newGeneration, currentGeneration, M);
-            currentGeneration = selectMultiple(selection, secondSelection, selectionSize1, selectionSize2, newGeneration, M);
+            auxGeneration = selectMultiple(selection, secondSelection, selectionSize1, selectionSize2, newGeneration, M);
+
+            double similarity = 0;
+            boolean isSimilar;
+
+            for (Player player : auxGeneration) {
+                isSimilar = false;
+                for( int i = 0; i < currentGeneration.size() && !isSimilar; i++ ) {
+                    if( player.isSimilar(currentGeneration.get(i), delta)) {
+                        isSimilar = true;
+                        currentGeneration.remove(i);
+                    }
+                }
+
+                if( isSimilar ) {
+                    similarity++;
+                }
+            }
+
+            System.out.println(averageFitness + " " + minimumFitness + " " + (1-(similarity/auxGeneration.size())) + " ");
+
+            currentGeneration = auxGeneration;
             newGeneration.clear();
-        } while( evaluator != null && evaluator.evaluate(start, parameterMillis, generation, maxGen) );
+        } while( evaluator != null && evaluator.evaluate(start, parameterMillis, generation, maxGen, currentGeneration, maxRoundsNoChange, structureVariety, delta) );
 
         return currentGeneration;
     }
@@ -79,6 +98,9 @@ public class Resolver {
                 playersTotal.addAll(select(secondImplementationMethod, aux, replaceB, M));
                 aux.clear();
                 break;
+            default:
+                System.out.println("The evaluator doesn't have a correct name.");
+                System.exit(1);
         }
         return playersTotal;
     }
@@ -117,6 +139,9 @@ public class Resolver {
             case "DETERMINISTIC_TOURNAMENT":
                 playerList = deterministicTournament.solve(children, K, M);
                 break;
+            default:
+                System.out.println("At least one of the selectors/replacers doesn't have a correct name.");
+                System.exit(1);
         }
         return playerList;
     }
@@ -138,6 +163,9 @@ public class Resolver {
             case "UNIFORM":
                 children.addAll(crossovers.uniform(player1, player2 , random));
                 break;
+            default:
+                System.out.println("The crossover method doesn't have a correct name.");
+                System.exit(1);
         }
         return children;
     }
@@ -157,6 +185,9 @@ public class Resolver {
             case "COMPLETE_MUTATION":
                 mutations.complete(player, characteristics, Pm);
                 break;
+            default:
+                System.out.println("The mutation method doesn't have a correct name.");
+                System.exit(1);
         }
     }
 
@@ -166,9 +197,14 @@ public class Resolver {
                 return new EvaluateTime();
             case "GEN_Q":
                 return new EvaluateGenQ();
+            case "CONTENT":
+                return new EvaluateMax();
+            case "STRUCTURE":
+                return new EvaluateStructure();
             default:
+                System.out.println("The evaluator doesn't have a correct name.");
+                System.exit(1);
                 return null;
         }
-
     }
 }

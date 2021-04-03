@@ -7,22 +7,32 @@ i = 0
 generations = []
 averages = []
 minimums = []
-fig, ax = plt.subplots()
+varieties = []
+fig1, ax1 = plt.subplots()
+fig1.canvas.set_window_title('Average and minimum Player Performance per Generation')
 plt.xlabel('Generation')
 plt.ylabel('Performance')
-
-ax.plot(generations, averages, label = 'Average Performance', color = 'blue')
-ax.plot(generations, minimums, label = 'Minimum Performance', color = 'red')
-ax.legend()
+fig2, ax2 = plt.subplots()
+fig2.canvas.set_window_title('Player variety per generation')
+plt.ylabel('Variety')
+ax1.plot(generations, averages, label = 'Average Performance', color = 'blue')
+ax1.plot(generations, minimums, label = 'Minimum Performance', color = 'red')
+ax1.set_title('Average and minimum Player Performance per Generation')
+ax1.legend()
+ax2.plot(generations, varieties, label = 'Varieties', color = 'green')
+ax2.set_title('Player variety per generation')
+ax2.legend()
 
 for line in stdin:
     args = re.split(r" ",line)
     generations.append(i)
     averages.append(float(args[0]))
     minimums.append(float(args[1]))
+    varieties.append(float(args[2]))
     i = i + 1
-    ax.plot(generations, averages, label = 'Average', color = 'blue')
-    ax.plot(generations, minimums, label = 'Minimum Performance', color = 'red')
+    ax1.plot(generations, averages, label = 'Average', color = 'blue')
+    ax1.plot(generations, minimums, label = 'Minimum Performance', color = 'red')
+    ax2.plot(generations, varieties, label = 'Varieties', color = 'green')
     plt.pause(0.02)
 
 plt.show()

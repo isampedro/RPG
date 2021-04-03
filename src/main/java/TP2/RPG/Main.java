@@ -19,7 +19,6 @@ public class Main {
         JSONParser parser = new JSONParser();
 
         try (Reader reader = new FileReader("configs.json")) {
-
             JSONObject jsonObject = (JSONObject) parser.parse(reader);
             int MAX_LINES = ((Long) jsonObject.get("maxLines")).intValue();
             Characteristics characteristics = new Characteristics(
@@ -47,7 +46,8 @@ public class Main {
             Resolver resolver = new Resolver();
             List<Player> winners = resolver.solve(characteristics, K, M, firstSelectionMethod, crossover, mutation,
                     evaluator, maxMillis, Pm, implementation, firstReplacementMethod, N, maxGenerations,
-                    initialPopulation, A, B, secondSelectionMethod, secondReplacementMethod );
+                    initialPopulation, A, B, secondSelectionMethod, secondReplacementMethod, ((Long) jsonObject.get("contentMaxRounds")).intValue(),
+                    (double) jsonObject.get("structureVariety") ,(double) jsonObject.get("delta"));
         } catch (IOException | ParseException e) {
             System.out.println("There was an error reading the JSON file");
             e.printStackTrace();
