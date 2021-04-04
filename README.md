@@ -60,7 +60,9 @@ Con este comando se corre el programa de Java y el programa de Python en simultÃ
 
 A continuaciÃ³n, los miembros del equipo que hicieron este proyecto posible:
 >IGNACIO  SAMPEDRO
+
 > MARTIN CICCIOLI
+
 > GERONIMO MASPERO
 
 
