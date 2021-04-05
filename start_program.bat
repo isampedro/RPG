@@ -1,1 +1,1 @@
-java -jar .\out\artifacts\RPG_jar\RPG.jar | py .\src\main\python\graphics.py
+java -jar ./out/artifacts/RPG_jar/RPG.jar | py ./src/main/python/graphics.py
