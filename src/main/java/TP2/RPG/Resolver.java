@@ -14,7 +14,7 @@ public class Resolver {
     public List<Player> solve(Characteristics characteristics, int K, Integer M, String selection, String crossOverMethod, String mutationMethod,
                               String evaluatorValue, Long parameterMillis, double Pm, String implementation, String replacement, int N,
                               int maxGen, int startingParents, double A, double B, String secondSelection, String secondReplacement, int maxRoundsNoChange,
-                              double structureVariety, double delta, int acceptableSolution ) {
+                              double structureVariety, double delta, int acceptableSolution, double T0, double Tc ) {
         List<Player> currentGeneration,newGeneration = new ArrayList<>(), population = new ArrayList<>(), auxGeneration, lastGeneration;
         Evaluator evaluator = evaluator(evaluatorValue);
         double minimumFitness, averageFitness, maximumFitness;
@@ -30,7 +30,7 @@ public class Resolver {
         long start = System.currentTimeMillis(), generation = -1;
         int replaceSize1 = (int) (N*B), replaceSize2 = N - replaceSize1;
         int selectionSize1 = (int) (K*A), selectionSize2 = K - selectionSize1;
-        currentGeneration = selectMultiple(selection, secondSelection, selectionSize1, selectionSize2, population, M);
+        currentGeneration = selectMultiple(selection, secondSelection, selectionSize1, selectionSize2, population, M, T0, Tc);
         do {
             minimumFitness = currentGeneration.get(0).getPerformance();
             maximumFitness = currentGeneration.get(0).getPerformance();
@@ -54,8 +54,8 @@ public class Resolver {
                 mutate(mutationMethod, child, characteristics, Pm);
             }
             population.addAll(newGeneration);
-            newGeneration = replace(implementation, replacement, secondReplacement, replaceSize1, replaceSize2, N, newGeneration, currentGeneration, M);
-            auxGeneration = selectMultiple(selection, secondSelection, selectionSize1, selectionSize2, newGeneration, M);
+            newGeneration = replace(implementation, replacement, secondReplacement, replaceSize1, replaceSize2, N, newGeneration, currentGeneration, M, T0, Tc);
+            auxGeneration = selectMultiple(selection, secondSelection, selectionSize1, selectionSize2, newGeneration, M, T0, Tc);
 
             similarity = 0;
 
@@ -115,24 +115,24 @@ public class Resolver {
     }
 
     private List<Player> replace( String implementation, String implementationMethod, String secondImplementationMethod, int replaceA, int replaceB, int N,
-                                  List<Player> newGeneration, List<Player> currentGeneration, int M ) {
+                                  List<Player> newGeneration, List<Player> currentGeneration, int M, double T0, double Tc ) {
         List<Player> playersTotal = new ArrayList<>(), aux = new ArrayList<>();
         switch (implementation.toUpperCase()) {
             case "FILL_PARENT":
                 if( newGeneration.size() > N ) {
-                    playersTotal.addAll(select(implementationMethod, newGeneration, replaceA, M));
-                    playersTotal.addAll(select(secondImplementationMethod, newGeneration, replaceB, M));
+                    playersTotal.addAll(select(implementationMethod, newGeneration, replaceA, M, T0, Tc));
+                    playersTotal.addAll(select(secondImplementationMethod, newGeneration, replaceB, M, T0, Tc));
                 } else {
                     playersTotal.addAll(newGeneration);
-                    playersTotal.addAll(select(implementationMethod, currentGeneration, replaceA, M));
-                    playersTotal.addAll(select(secondImplementationMethod, currentGeneration, replaceB, M));
+                    playersTotal.addAll(select(implementationMethod, currentGeneration, replaceA, M, T0, Tc));
+                    playersTotal.addAll(select(secondImplementationMethod, currentGeneration, replaceB, M, T0, Tc));
                 }
                 break;
             case "FILL_ALL":
                 aux.addAll(currentGeneration);
                 aux.addAll(newGeneration);
-                playersTotal.addAll(select(implementationMethod, aux, replaceA, M));
-                playersTotal.addAll(select(secondImplementationMethod, aux, replaceB, M));
+                playersTotal.addAll(select(implementationMethod, aux, replaceA, M, T0, Tc));
+                playersTotal.addAll(select(secondImplementationMethod, aux, replaceB, M, T0, Tc));
                 aux.clear();
                 break;
             default:
@@ -142,19 +142,20 @@ public class Resolver {
         return playersTotal;
     }
 
-    private List<Player> selectMultiple(String selectionMethod, String secondSelectionMethod, int selectA, int selectB , List<Player> children, Integer M) {
+    private List<Player> selectMultiple(String selectionMethod, String secondSelectionMethod, int selectA, int selectB , List<Player> children, Integer M, double T0, double Tc) {
         List<Player> result = new ArrayList<>();
-        result.addAll(select(selectionMethod, children, selectA, M));
-        result.addAll(select(secondSelectionMethod, children, selectB, M));
+        result.addAll(select(selectionMethod, children, selectA, M, T0, Tc));
+        result.addAll(select(secondSelectionMethod, children, selectB, M, T0, Tc));
         return result;
     }
 
-    private List<Player> select(String selectionMethod, List<Player> children, int K, Integer M) {
+    private List<Player> select(String selectionMethod, List<Player> children, int K, Integer M, double T0, double Tc) {
         List<Player> playerList = new ArrayList<>();
         Elite elite = new Elite();
         Roulette roulette = new Roulette();
         Ranking ranking = new Ranking();
         Universal universal = new Universal();
+        Boltzmann boltzmann = new Boltzmann();
         ProbabilisticTournament probabilisticTournament = new ProbabilisticTournament();
         DeterministicTournament deterministicTournament = new DeterministicTournament();
         switch (selectionMethod.toUpperCase()) {
@@ -175,6 +176,9 @@ public class Resolver {
                 break;
             case "DETERMINISTIC_TOURNAMENT":
                 playerList = deterministicTournament.solve(children, K, M);
+                break;
+            case "BOLTZMANN":
+                playerList = boltzmann.solve(children, K, T0, Tc );
                 break;
             default:
                 System.out.println("At least one of the selectors/replacers doesn't have a correct name.");

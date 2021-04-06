@@ -48,7 +48,7 @@ public class Main {
             List<Player> winners = resolver.solve(characteristics, K, M, firstSelectionMethod, crossover, mutation,
                     evaluator, maxMillis, Pm, implementation, firstReplacementMethod, N, maxGenerations,
                     initialPopulation, A, B, secondSelectionMethod, secondReplacementMethod, ((Long) jsonObject.get("contentMaxRounds")).intValue(),
-                    (double) jsonObject.get("structureDiversity") ,(double) jsonObject.get("delta"), acceptableSolution );
+                    (double) jsonObject.get("structureDiversity") ,(double) jsonObject.get("delta"), acceptableSolution, (Double) jsonObject.get("T0"), (Double) jsonObject.get("Tc") );
         } catch (IOException | ParseException e) {
             System.out.println("There was an error reading the JSON file");
             e.printStackTrace();
