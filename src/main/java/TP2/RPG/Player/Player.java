@@ -179,7 +179,7 @@ public class Player {
         if( armor.isSimilar(player.armor, delta) ) {
             countSimilarity++;
         }
-        return countSimilarity >= 5;
+        return countSimilarity == 6;
     }
 
     @Override

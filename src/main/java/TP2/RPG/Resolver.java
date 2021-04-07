@@ -11,6 +11,16 @@ import java.util.List;
 import java.util.Random;
 
 public class Resolver {
+    Elite elite = new Elite();
+    Roulette roulette = new Roulette();
+    Ranking ranking = new Ranking();
+    Universal universal = new Universal();
+    Boltzmann boltzmann = new Boltzmann();
+    ProbabilisticTournament probabilisticTournament = new ProbabilisticTournament();
+    DeterministicTournament deterministicTournament = new DeterministicTournament();
+    Crossovers crossovers = new Crossovers();
+    Mutations mutations = new Mutations();
+
     public List<Player> solve(Characteristics characteristics, int K, Integer M, String selection, String crossOverMethod, String mutationMethod,
                               String evaluatorValue, Long parameterMillis, double Pm, String implementation, String replacement, int N,
                               int maxGen, int startingParents, double A, double B, String secondSelection, String secondReplacement, int maxRoundsNoChange,
@@ -151,46 +161,47 @@ public class Resolver {
 
     private List<Player> select(String selectionMethod, List<Player> children, int K, Integer M, double T0, double Tc) {
         List<Player> playerList = new ArrayList<>();
-        Elite elite = new Elite();
-        Roulette roulette = new Roulette();
-        Ranking ranking = new Ranking();
-        Universal universal = new Universal();
-        Boltzmann boltzmann = new Boltzmann();
-        ProbabilisticTournament probabilisticTournament = new ProbabilisticTournament();
-        DeterministicTournament deterministicTournament = new DeterministicTournament();
+        Player maxPerformancePlayer = children.get(0);
+        for (Player child : children) {
+            if( maxPerformancePlayer.getPerformance() < child.getPerformance()  ) {
+                maxPerformancePlayer = child;
+            }
+        }
+
         switch (selectionMethod.toUpperCase()) {
             case "ELITE":
-                playerList = elite.solve( children, K );
+                playerList = elite.solve( children, K-1 );
                 break;
             case "ROULETTE":
-                playerList = roulette.solve(children, K);
+                playerList = roulette.solve(children, K-1);
                 break;
             case "RANKING":
-                playerList = ranking.solve(children, K);
+                playerList = ranking.solve(children, K-1);
                 break;
             case "UNIVERSAL":
-                playerList = universal.solve(children, K);
+                playerList = universal.solve(children, K-1);
                 break;
             case "PROBABILISTIC_TOURNAMENT":
-                playerList = probabilisticTournament.solve(children, K);
+                playerList = probabilisticTournament.solve(children, K-1);
                 break;
             case "DETERMINISTIC_TOURNAMENT":
-                playerList = deterministicTournament.solve(children, K, M);
+                playerList = deterministicTournament.solve(children, K-1, M);
                 break;
             case "BOLTZMANN":
-                playerList = boltzmann.solve(children, K, T0, Tc );
+                playerList = boltzmann.solve(children, K-1, T0, Tc );
                 break;
             default:
                 System.out.println("At least one of the selectors/replacers doesn't have a correct name.");
                 System.exit(1);
         }
+        playerList.add(maxPerformancePlayer);
         return playerList;
     }
 
     private List<Player> crossOver( String crossoverMethod, Player player1, Player player2 ) {
         Random random = new Random(System.currentTimeMillis());
         List<Player> children = new ArrayList<>();
-        Crossovers crossovers = new Crossovers();
+
         switch (crossoverMethod.toUpperCase()) {
             case "SINGLE_POINT":
                 children.addAll(crossovers.singlePoint(player1, player2 , random));
@@ -212,7 +223,6 @@ public class Resolver {
     }
 
     private void mutate( String mutationMethod, Player player, Characteristics characteristics, double Pm) {
-        Mutations mutations = new Mutations();
         switch (mutationMethod.toUpperCase()) {
             case "SIMPLE_MUTATION":
                 mutations.simple(player, characteristics, Pm);

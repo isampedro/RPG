@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Random;
 
 public class Boltzmann {
-    Double totalPerformance = null;
 
     public List<Player> solve(List<Player> players, int K, double T0, double Tc) {
         if( K <= 0 ) {
@@ -18,7 +17,6 @@ public class Boltzmann {
         for( int i = 0; i < players.size(); i++ ) {
             expVal[i] = expValCalculation(calculateT(T0, Tc, players.get(i).getGeneration()), players.get(i), players);
         }
-        totalPerformance = null;
 
         double fitnessTotal = 0;
         for(int i = 0; i < players.size(); i++ ) {
@@ -39,24 +37,19 @@ public class Boltzmann {
         boolean found = false;
         for( int i = 0; i < K && i < players.size(); i++ ) {
             rs[i] = random.nextDouble();
-//            System.out.println("Random " + i + " is " + rs[i]);
             if(rs[i] < cumulatedFitness.get(0)) {
                 chosen.add(players.get(0));
-//                System.out.println("Cumulated Fitness: " + cumulatedFitness.get(0));
             } else {
                 for( int j = 1; j < players.size() && !found; j++ ) {
                     if( cumulatedFitness.get(j-1) < rs[i] && rs[i] <= cumulatedFitness.get(j) ) {
                         chosen.add(players.get(j));
                         found = true;
-//                        System.out.println("Cumulated Fitness: " + cumulatedFitness.get(j));
                     }
                 }
                 found = false;
             }
         }
-
         return chosen;
-
     }
 
     private double calculateT( double T0, double Tc, int generation) {
@@ -71,12 +64,9 @@ public class Boltzmann {
     }
 
     private double getTotalPerformance(List<Player> players) {
-        if( totalPerformance == null ) {
-            totalPerformance = 0.0;
-            for (Player player : players) {
-                totalPerformance += player.getPerformance();
-            }
-
+        double totalPerformance = 0.0;
+        for (Player player : players) {
+            totalPerformance += player.getPerformance();
         }
         return totalPerformance;
     }
