@@ -60,9 +60,10 @@ public class Resolver {
             for( int i = 0; i < currentGeneration.size(); i+=2) {
                 newGeneration.addAll(crossOver(crossOverMethod, currentGeneration.get(i), currentGeneration.get((i+1) % currentGeneration.size())));
             }
-            for (Player child : newGeneration) {
-                mutate(mutationMethod, child, characteristics, Pm);
+            for( int i = 0; i < newGeneration.size(); i++ ) {
+                newGeneration.set(i, mutate(mutationMethod, newGeneration.get(i), characteristics, Pm));
             }
+
             population.addAll(newGeneration);
             newGeneration = replace(implementation, replacement, secondReplacement, replaceSize1, replaceSize2, N, newGeneration, currentGeneration, M, T0, Tc);
             auxGeneration = selectMultiple(selection, secondSelection, selectionSize1, selectionSize2, newGeneration, M, T0, Tc);
@@ -85,8 +86,9 @@ public class Resolver {
 
             System.out.println(averageFitness + " " + minimumFitness + " " + (1-(similarity/auxGeneration.size())) + " " + maximumFitness + " ");
 
-            lastGeneration = currentGeneration;
-            currentGeneration = auxGeneration;
+            lastGeneration = auxGeneration;
+            currentGeneration = new ArrayList<>(auxGeneration);
+            auxGeneration.clear();
             newGeneration.clear();
         } while( evaluator != null && evaluator.evaluate(start, parameterMillis, generation, maxGen, currentGeneration, maxRoundsNoChange, structureVariety, delta, acceptableSolution) );
 
@@ -222,24 +224,25 @@ public class Resolver {
         return children;
     }
 
-    private void mutate( String mutationMethod, Player player, Characteristics characteristics, double Pm) {
+    private Player mutate( String mutationMethod, Player player, Characteristics characteristics, double Pm) {
         switch (mutationMethod.toUpperCase()) {
             case "SIMPLE_MUTATION":
-                mutations.simple(player, characteristics, Pm);
+                player = mutations.simple(player, characteristics, Pm);
                 break;
             case "LIMITED_MULTIGEN":
-                mutations.limitedMultigen(player, characteristics, Pm);
+                player = mutations.limitedMultigen(player, characteristics, Pm);
                 break;
             case "UNIFORM_MULTIGEN":
-                mutations.uniformMultigen(player, characteristics, Pm);
+                player = mutations.uniformMultigen(player, characteristics, Pm);
                 break;
             case "COMPLETE_MUTATION":
-                mutations.complete(player, characteristics, Pm);
+                player = mutations.complete(player, characteristics, Pm);
                 break;
             default:
                 System.out.println("The mutation method doesn't have a correct name.");
                 System.exit(1);
         }
+        return player;
     }
 
     private Evaluator evaluator(String evaluatorValue) {

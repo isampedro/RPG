@@ -7,7 +7,7 @@ import TP2.RPG.Player.Player;
 import java.util.Random;
 
 public class Mutations {
-    public void simple(Player player, Characteristics characteristics, double Pm) {
+    public Player simple(Player player, Characteristics characteristics, double Pm) {
         Random random = new Random(System.currentTimeMillis());
         int gen;
         double i = random.nextDouble();
@@ -15,9 +15,10 @@ public class Mutations {
             gen = random.nextInt(6);
             mutatePlayer(player, characteristics ,gen);
         }
+        return player;
     }
 
-    public void limitedMultigen( Player player, Characteristics characteristics, double Pm) {
+    public Player limitedMultigen( Player player, Characteristics characteristics, double Pm) {
         Random random = new Random(System.currentTimeMillis());
         int gensQ = random.nextInt(6) + 1, gen;
         double j;
@@ -27,11 +28,11 @@ public class Mutations {
                 gen = random.nextInt(6);
                 mutatePlayer(player, characteristics ,gen);
             }
-
         }
+        return player;
     }
 
-    public void uniformMultigen( Player player, Characteristics characteristics, double Pm) {
+    public Player uniformMultigen( Player player, Characteristics characteristics, double Pm) {
         Random random = new Random(System.currentTimeMillis());
         double j;
         for(int i = 0; i < 6; i++) {
@@ -40,20 +41,22 @@ public class Mutations {
                 mutatePlayer(player, characteristics ,i);
             }
         }
+        return player;
     }
 
-    public void complete( Player player, Characteristics characteristics, double Pm) {
+    public Player complete( Player player, Characteristics characteristics, double Pm) {
         Random random = new Random(System.currentTimeMillis());
         double j;
         j = random.nextDouble();
         if( j < Pm ) {
             for(int i = 0; i < 6; i++) {
-                mutatePlayer(player, characteristics ,i);
+                player = mutatePlayer(player, characteristics ,i);
             }
         }
+        return player;
     }
 
-    private void mutatePlayer( Player player, Characteristics characteristics, int index ) {
+    private Player mutatePlayer( Player player, Characteristics characteristics, int index ) {
         Item selectedItem;
         Random random = new Random(System.currentTimeMillis());
 
@@ -82,5 +85,6 @@ public class Mutations {
                 player.setHeight(random.nextDouble()*(2-1.3) + 1.3);
                 break;
         }
+        return player;
     }
 }
