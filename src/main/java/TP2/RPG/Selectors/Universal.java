@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Random;
 
 public class Universal {
-    public List<Player> solve(List<Player> players, int K) {
+    public List<Player> solve(List<Player> players, int K, Random random) {
         if( K <= 0 ) {
             System.exit(1);
         }
@@ -25,7 +25,6 @@ public class Universal {
             cumulatedFitness.add(relativeFitness.get(i) + cumulatedFitness.get(i-1));
         }
 
-        Random random = new Random(System.currentTimeMillis());
         Double[] rs = new Double[K];
         List<Player> chosen = new ArrayList<>();
         boolean found = false;

@@ -7,14 +7,13 @@ import java.util.List;
 import java.util.Random;
 
 public class ProbabilisticTournament {
-    public List<Player> solve(List<Player> players, int K) {
+    public List<Player> solve(List<Player> players, int K, Random random) {
         if( K <= 0 ) {
             System.exit(1);
         }
 
         List<Player> chosen = new ArrayList<>();
         int index1, index2;
-        Random random = new Random(System.currentTimeMillis());
         double threshold, r;
         for( int i = 0; i < K; i++ ) {
             threshold = random.nextDouble()*0.5 + 0.5;

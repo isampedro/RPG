@@ -7,58 +7,53 @@ import TP2.RPG.Player.Player;
 import java.util.Random;
 
 public class Mutations {
-    public Player simple(Player player, Characteristics characteristics, double Pm) {
-        Random random = new Random(System.currentTimeMillis());
+    public Player simple(Player player, Characteristics characteristics, double Pm, Random random) {
         int gen;
         double i = random.nextDouble();
         if( i < Pm ) {
             gen = random.nextInt(6);
-            mutatePlayer(player, characteristics ,gen);
+            mutatePlayer(player, characteristics ,gen, random);
         }
         return player;
     }
 
-    public Player limitedMultigen( Player player, Characteristics characteristics, double Pm) {
-        Random random = new Random(System.currentTimeMillis());
+    public Player limitedMultigen( Player player, Characteristics characteristics, double Pm, Random random) {
         int gensQ = random.nextInt(6) + 1, gen;
         double j;
         for(int i = 0; i < gensQ; i++) {
             j = random.nextDouble();
             if( j < Pm ) {
                 gen = random.nextInt(6);
-                mutatePlayer(player, characteristics ,gen);
+                mutatePlayer(player, characteristics ,gen, random);
             }
         }
         return player;
     }
 
-    public Player uniformMultigen( Player player, Characteristics characteristics, double Pm) {
-        Random random = new Random(System.currentTimeMillis());
+    public Player uniformMultigen( Player player, Characteristics characteristics, double Pm, Random random) {
         double j;
         for(int i = 0; i < 6; i++) {
             j = random.nextDouble();
             if( j < Pm ) {
-                mutatePlayer(player, characteristics ,i);
+                mutatePlayer(player, characteristics ,i, random);
             }
         }
         return player;
     }
 
-    public Player complete( Player player, Characteristics characteristics, double Pm) {
-        Random random = new Random(System.currentTimeMillis());
+    public Player complete( Player player, Characteristics characteristics, double Pm, Random random) {
         double j;
         j = random.nextDouble();
         if( j < Pm ) {
             for(int i = 0; i < 6; i++) {
-                player = mutatePlayer(player, characteristics ,i);
+                player = mutatePlayer(player, characteristics ,i, random);
             }
         }
         return player;
     }
 
-    private Player mutatePlayer( Player player, Characteristics characteristics, int index ) {
+    private Player mutatePlayer( Player player, Characteristics characteristics, int index, Random random ) {
         Item selectedItem;
-        Random random = new Random(System.currentTimeMillis());
 
         switch (index) {
             case 0:

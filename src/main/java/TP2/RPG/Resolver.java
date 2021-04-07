@@ -25,7 +25,7 @@ public class Resolver {
                               String evaluatorValue, Long parameterMillis, double Pm, String implementation, String replacement, int N,
                               int maxGen, int startingParents, double A, double B, String secondSelection, String secondReplacement, int maxRoundsNoChange,
                               double structureVariety, double delta, int acceptableSolution, double T0, double Tc ) {
-        List<Player> currentGeneration,newGeneration = new ArrayList<>(), population = new ArrayList<>(), auxGeneration, lastGeneration;
+        List<Player> newGeneration = new ArrayList<>(), population = new ArrayList<>(), auxGeneration, lastGeneration;
         Evaluator evaluator = evaluator(evaluatorValue);
         double minimumFitness, averageFitness, maximumFitness;
         Random random = new Random(System.currentTimeMillis());
@@ -40,12 +40,12 @@ public class Resolver {
         long start = System.currentTimeMillis(), generation = -1;
         int replaceSize1 = (int) (N*B), replaceSize2 = N - replaceSize1;
         int selectionSize1 = (int) (K*A), selectionSize2 = K - selectionSize1;
-        currentGeneration = selectMultiple(selection, secondSelection, selectionSize1, selectionSize2, population, M, T0, Tc);
         do {
-            minimumFitness = currentGeneration.get(0).getPerformance();
-            maximumFitness = currentGeneration.get(0).getPerformance();
+            newGeneration.clear();
+            minimumFitness = population.get(0).getPerformance();
+            maximumFitness = population.get(0).getPerformance();
             averageFitness = 0;
-            for (Player player : currentGeneration) {
+            for (Player player : population) {
                 if( minimumFitness > player.getPerformance() ) {
                     minimumFitness = player.getPerformance();
                 }
@@ -54,28 +54,39 @@ public class Resolver {
                 }
                 averageFitness += player.getPerformance();
             }
-            averageFitness /= currentGeneration.size();
+            averageFitness /= population.size();
 
             generation++;
-            for( int i = 0; i < currentGeneration.size(); i+=2) {
-                newGeneration.addAll(crossOver(crossOverMethod, currentGeneration.get(i), currentGeneration.get((i+1) % currentGeneration.size())));
-            }
-            for( int i = 0; i < newGeneration.size(); i++ ) {
-                newGeneration.set(i, mutate(mutationMethod, newGeneration.get(i), characteristics, Pm));
+
+            // select new parents
+            auxGeneration = selectMultiple(selection, secondSelection, selectionSize1, selectionSize2, population, M, T0, Tc, random);
+
+            // Creating new children from parents
+            for( int i = 0; i < auxGeneration.size(); i+=2) {
+                int j = i+1;
+                if( j >= auxGeneration.size() ) {
+                    j = i;
+                }
+                newGeneration.addAll(crossOver(crossOverMethod, auxGeneration.get(i), auxGeneration.get((j)), random));
             }
 
-            population.addAll(newGeneration);
-            newGeneration = replace(implementation, replacement, secondReplacement, replaceSize1, replaceSize2, N, newGeneration, currentGeneration, M, T0, Tc);
-            auxGeneration = selectMultiple(selection, secondSelection, selectionSize1, selectionSize2, newGeneration, M, T0, Tc);
+            // Mutate new children
+            for( int i = 0; i < newGeneration.size(); i++ ) {
+                newGeneration.set(i, mutate(mutationMethod, newGeneration.get(i), characteristics, Pm, random));
+            }
+
+            // Replace new children
+            auxGeneration = population;
+            population = replace(implementation, replacement, secondReplacement, replaceSize1, replaceSize2, N, newGeneration, auxGeneration, M, T0, Tc, random);
 
             similarity = 0;
 
-            for (Player player : auxGeneration) {
+            for (Player player : population) {
                 isSimilar = false;
-                for( int i = 0; i < currentGeneration.size() && !isSimilar; i++ ) {
-                    if( player.isSimilar(currentGeneration.get(i), delta)) {
+                for( int i = 0; i < auxGeneration.size() && !isSimilar; i++ ) {
+                    if( player.isSimilar(auxGeneration.get(i), delta)) {
                         isSimilar = true;
-                        currentGeneration.remove(i);
+                        //auxGeneration.remove(i);
                     }
                 }
 
@@ -84,18 +95,16 @@ public class Resolver {
                 }
             }
 
-            System.out.println(averageFitness + " " + minimumFitness + " " + (1-(similarity/auxGeneration.size())) + " " + maximumFitness + " ");
+            System.out.println(averageFitness + " " + minimumFitness + " " + (1-(similarity/population.size())) + " " + maximumFitness + " ");
 
-            lastGeneration = auxGeneration;
-            currentGeneration = new ArrayList<>(auxGeneration);
+            lastGeneration = new ArrayList<>(auxGeneration);
             auxGeneration.clear();
-            newGeneration.clear();
-        } while( evaluator != null && evaluator.evaluate(start, parameterMillis, generation, maxGen, currentGeneration, maxRoundsNoChange, structureVariety, delta, acceptableSolution) );
+        } while( evaluator != null && evaluator.evaluate(start, parameterMillis, generation, maxGen, population, maxRoundsNoChange, structureVariety, delta, acceptableSolution) );
 
-        minimumFitness = currentGeneration.get(0).getPerformance();
-        maximumFitness = currentGeneration.get(0).getPerformance();
+        minimumFitness = population.get(0).getPerformance();
+        maximumFitness = population.get(0).getPerformance();
 
-        for (Player player : currentGeneration) {
+        for (Player player : population) {
             if( minimumFitness > player.getPerformance() ) {
                 minimumFitness = player.getPerformance();
             }
@@ -104,16 +113,16 @@ public class Resolver {
             }
             averageFitness += player.getPerformance();
         }
-        averageFitness /= currentGeneration.size();
+        averageFitness /= population.size();
 
         similarity = 0;
 
         for (Player player : lastGeneration) {
             isSimilar = false;
-            for( int i = 0; i < currentGeneration.size() && !isSimilar; i++ ) {
-                if( player.isSimilar(currentGeneration.get(i), delta)) {
+            for( int i = 0; i < population.size() && !isSimilar; i++ ) {
+                if( player.isSimilar(population.get(i), delta)) {
                     isSimilar = true;
-                    currentGeneration.remove(i);
+                    population.remove(i);
                 }
             }
 
@@ -123,28 +132,28 @@ public class Resolver {
         }
 
         System.out.println(averageFitness + " " + minimumFitness + " " + (1-(similarity/lastGeneration.size())) + " " + maximumFitness + " ");
-        return currentGeneration;
+        return population;
     }
 
     private List<Player> replace( String implementation, String implementationMethod, String secondImplementationMethod, int replaceA, int replaceB, int N,
-                                  List<Player> newGeneration, List<Player> currentGeneration, int M, double T0, double Tc ) {
+                                  List<Player> newGeneration, List<Player> currentGeneration, int M, double T0, double Tc, Random random ) {
         List<Player> playersTotal = new ArrayList<>(), aux = new ArrayList<>();
         switch (implementation.toUpperCase()) {
             case "FILL_PARENT":
                 if( newGeneration.size() > N ) {
-                    playersTotal.addAll(select(implementationMethod, newGeneration, replaceA, M, T0, Tc));
-                    playersTotal.addAll(select(secondImplementationMethod, newGeneration, replaceB, M, T0, Tc));
+                    playersTotal.addAll(select(implementationMethod, newGeneration, replaceA, M, T0, Tc, random));
+                    playersTotal.addAll(select(secondImplementationMethod, newGeneration, replaceB, M, T0, Tc, random));
                 } else {
                     playersTotal.addAll(newGeneration);
-                    playersTotal.addAll(select(implementationMethod, currentGeneration, replaceA, M, T0, Tc));
-                    playersTotal.addAll(select(secondImplementationMethod, currentGeneration, replaceB, M, T0, Tc));
+                    playersTotal.addAll(select(implementationMethod, currentGeneration, replaceA, M, T0, Tc, random));
+                    playersTotal.addAll(select(secondImplementationMethod, currentGeneration, replaceB, M, T0, Tc, random));
                 }
                 break;
             case "FILL_ALL":
                 aux.addAll(currentGeneration);
                 aux.addAll(newGeneration);
-                playersTotal.addAll(select(implementationMethod, aux, replaceA, M, T0, Tc));
-                playersTotal.addAll(select(secondImplementationMethod, aux, replaceB, M, T0, Tc));
+                playersTotal.addAll(select(implementationMethod, aux, replaceA, M, T0, Tc, random));
+                playersTotal.addAll(select(secondImplementationMethod, aux, replaceB, M, T0, Tc, random));
                 aux.clear();
                 break;
             default:
@@ -154,14 +163,14 @@ public class Resolver {
         return playersTotal;
     }
 
-    private List<Player> selectMultiple(String selectionMethod, String secondSelectionMethod, int selectA, int selectB , List<Player> children, Integer M, double T0, double Tc) {
+    private List<Player> selectMultiple(String selectionMethod, String secondSelectionMethod, int selectA, int selectB , List<Player> children, Integer M, double T0, double Tc, Random random) {
         List<Player> result = new ArrayList<>();
-        result.addAll(select(selectionMethod, children, selectA, M, T0, Tc));
-        result.addAll(select(secondSelectionMethod, children, selectB, M, T0, Tc));
+        result.addAll(select(selectionMethod, children, selectA, M, T0, Tc, random));
+        result.addAll(select(secondSelectionMethod, children, selectB, M, T0, Tc, random));
         return result;
     }
 
-    private List<Player> select(String selectionMethod, List<Player> children, int K, Integer M, double T0, double Tc) {
+    private List<Player> select(String selectionMethod, List<Player> children, int K, Integer M, double T0, double Tc, Random random) {
         List<Player> playerList = new ArrayList<>();
         Player maxPerformancePlayer = children.get(0);
         for (Player child : children) {
@@ -175,22 +184,22 @@ public class Resolver {
                 playerList = elite.solve( children, K-1 );
                 break;
             case "ROULETTE":
-                playerList = roulette.solve(children, K-1);
+                playerList = roulette.solve(children, K-1, random);
                 break;
             case "RANKING":
-                playerList = ranking.solve(children, K-1);
+                playerList = ranking.solve(children, K-1, random);
                 break;
             case "UNIVERSAL":
-                playerList = universal.solve(children, K-1);
+                playerList = universal.solve(children, K-1, random);
                 break;
             case "PROBABILISTIC_TOURNAMENT":
-                playerList = probabilisticTournament.solve(children, K-1);
+                playerList = probabilisticTournament.solve(children, K-1, random);
                 break;
             case "DETERMINISTIC_TOURNAMENT":
-                playerList = deterministicTournament.solve(children, K-1, M);
+                playerList = deterministicTournament.solve(children, K-1, M, random);
                 break;
             case "BOLTZMANN":
-                playerList = boltzmann.solve(children, K-1, T0, Tc );
+                playerList = boltzmann.solve(children, K-1, T0, Tc, random );
                 break;
             default:
                 System.out.println("At least one of the selectors/replacers doesn't have a correct name.");
@@ -200,8 +209,7 @@ public class Resolver {
         return playerList;
     }
 
-    private List<Player> crossOver( String crossoverMethod, Player player1, Player player2 ) {
-        Random random = new Random(System.currentTimeMillis());
+    private List<Player> crossOver( String crossoverMethod, Player player1, Player player2, Random random ) {
         List<Player> children = new ArrayList<>();
 
         switch (crossoverMethod.toUpperCase()) {
@@ -224,19 +232,19 @@ public class Resolver {
         return children;
     }
 
-    private Player mutate( String mutationMethod, Player player, Characteristics characteristics, double Pm) {
+    private Player mutate( String mutationMethod, Player player, Characteristics characteristics, double Pm, Random random) {
         switch (mutationMethod.toUpperCase()) {
             case "SIMPLE_MUTATION":
-                player = mutations.simple(player, characteristics, Pm);
+                player = mutations.simple(player, characteristics, Pm, random);
                 break;
             case "LIMITED_MULTIGEN":
-                player = mutations.limitedMultigen(player, characteristics, Pm);
+                player = mutations.limitedMultigen(player, characteristics, Pm, random);
                 break;
             case "UNIFORM_MULTIGEN":
-                player = mutations.uniformMultigen(player, characteristics, Pm);
+                player = mutations.uniformMultigen(player, characteristics, Pm, random);
                 break;
             case "COMPLETE_MUTATION":
-                player = mutations.complete(player, characteristics, Pm);
+                player = mutations.complete(player, characteristics, Pm, random);
                 break;
             default:
                 System.out.println("The mutation method doesn't have a correct name.");

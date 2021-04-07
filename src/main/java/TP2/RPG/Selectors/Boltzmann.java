@@ -8,7 +8,7 @@ import java.util.Random;
 
 public class Boltzmann {
 
-    public List<Player> solve(List<Player> players, int K, double T0, double Tc) {
+    public List<Player> solve(List<Player> players, int K, double T0, double Tc, Random random) {
         if( K <= 0 ) {
             System.exit(1);
         }
@@ -31,7 +31,6 @@ public class Boltzmann {
             cumulatedFitness.add(relativeFitness.get(i) + cumulatedFitness.get(i-1));
         }
 
-        Random random = new Random(System.currentTimeMillis());
         Double[] rs = new Double[K];
         List<Player> chosen = new ArrayList<>();
         boolean found = false;
