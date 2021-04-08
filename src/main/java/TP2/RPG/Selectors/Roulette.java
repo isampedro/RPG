@@ -30,16 +30,13 @@ public class Roulette {
         boolean found = false;
         for( int i = 0; i < K && i < players.size(); i++ ) {
             rs[i] = random.nextDouble();
-//            System.out.println("Random " + i + " is " + rs[i]);
             if(rs[i] < cumulatedFitness.get(0)) {
                 chosen.add(players.get(0));
-//                System.out.println("Cumulated Fitness: " + cumulatedFitness.get(0));
             } else {
                 for( int j = 1; j < players.size() && !found; j++ ) {
                     if( cumulatedFitness.get(j-1) < rs[i] && rs[i] <= cumulatedFitness.get(j) ) {
                         chosen.add(players.get(j));
                         found = true;
-//                        System.out.println("Cumulated Fitness: " + cumulatedFitness.get(j));
                     }
                 }
                 found = false;

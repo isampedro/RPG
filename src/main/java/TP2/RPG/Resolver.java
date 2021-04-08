@@ -86,7 +86,6 @@ public class Resolver {
                 for( int i = 0; i < auxGeneration.size() && !isSimilar; i++ ) {
                     if( player.isSimilar(auxGeneration.get(i), delta)) {
                         isSimilar = true;
-                        //auxGeneration.remove(i);
                     }
                 }
 

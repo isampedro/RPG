@@ -1,6 +1,7 @@
 from sys import stdin
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
+import matplotlib.ticker as mtick
 import re 
 
 i = 0
@@ -24,6 +25,7 @@ ax1.set_title('Performance per Generation')
 ax1.legend()
 ax2.plot(generations, varieties, label = 'Diversity', color = 'violet')
 ax2.set_title('Diversity per generation')
+ax2.yaxis.set_major_formatter(mtick.PercentFormatter(xmax=1, decimals=None, symbol='%', is_latex=False))
 ax2.legend()
 
 for line in stdin:

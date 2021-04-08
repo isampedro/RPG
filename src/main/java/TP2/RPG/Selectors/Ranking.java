@@ -29,7 +29,6 @@ public class Ranking {
         for( int i = 1; i < players.size(); i++ ) {
             relativeFitness.add(pseudoPerformance.get(i) /totalFitness);
             cumulatedFitness.add(relativeFitness.get(i) + cumulatedFitness.get(i-1));
-            //System.out.println(cumulatedFitness.get(i));
         }
 
         Double[] rs = new Double[K];
@@ -37,16 +36,13 @@ public class Ranking {
         boolean found = false;
         for( int i = 0; i < K; i++ ) {
             rs[i] = random.nextDouble();
-//            System.out.println("Random " + i + " is " + rs[i]);
             if(rs[i] < cumulatedFitness.get(0)) {
                 chosen.add(players.get(0));
-//                System.out.println("Cumulated Fitness: " + cumulatedFitness.get(0));
             } else {
                 for( int j = 1; j < players.size() && !found; j++ ) {
                     if( cumulatedFitness.get(j-1) < rs[i] && rs[i] <= cumulatedFitness.get(j) ) {
                         chosen.add(players.get(j));
                         found = true;
-//                        System.out.println("Cumulated Fitness: " + cumulatedFitness.get(j));
                     }
                 }
                 found = false;

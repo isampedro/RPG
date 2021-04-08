@@ -13,9 +13,11 @@ public class Boltzmann {
             System.exit(1);
         }
 
+        double totalPerformance = getTotalPerformance(players);
+
         double[] expVal = new double[players.size()];
         for( int i = 0; i < players.size(); i++ ) {
-            expVal[i] = expValCalculation(calculateT(T0, Tc, players.get(i).getGeneration()), players.get(i), players);
+            expVal[i] = expValCalculation(calculateT(T0, Tc, players.get(i).getGeneration()), players.get(i), players, totalPerformance);
         }
 
         double fitnessTotal = 0;
@@ -55,8 +57,7 @@ public class Boltzmann {
         return Tc + (T0 - Tc)*Math.exp(-generation);
     }
 
-    private double expValCalculation(double T, Player player, List<Player> players ) {
-        double totalPerformance = getTotalPerformance(players);
+    private double expValCalculation(double T, Player player, List<Player> players, double totalPerformance ) {
         double A = Math.exp(player.getPerformance()/T);
         double B = Math.exp(totalPerformance/T)/players.size();
         return A/B;
