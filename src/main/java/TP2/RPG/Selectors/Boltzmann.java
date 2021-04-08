@@ -8,7 +8,7 @@ import java.util.Random;
 
 public class Boltzmann {
 
-    public List<Player> solve(List<Player> players, int K, double T0, double Tc, Random random) {
+    public List<Player> solve(List<Player> players, int K, double T0, double Tc, Random random, double temperatureK) {
         if( K <= 0 ) {
             System.exit(1);
         }
@@ -17,7 +17,7 @@ public class Boltzmann {
 
         double[] expVal = new double[players.size()];
         for( int i = 0; i < players.size(); i++ ) {
-            expVal[i] = expValCalculation(calculateT(T0, Tc, players.get(i).getGeneration()), players.get(i), players, totalPerformance);
+            expVal[i] = expValCalculation(calculateT(T0, Tc, players.get(i).getGeneration(), temperatureK), players.get(i), players, totalPerformance);
         }
 
         double fitnessTotal = 0;
@@ -53,8 +53,8 @@ public class Boltzmann {
         return chosen;
     }
 
-    private double calculateT( double T0, double Tc, int generation) {
-        return Tc + (T0 - Tc)*Math.exp(-generation);
+    private double calculateT( double T0, double Tc, int generation, double temperatureK ) {
+        return Tc + (T0 - Tc)*Math.exp(-temperatureK*generation);
     }
 
     private double expValCalculation(double T, Player player, List<Player> players, double totalPerformance ) {

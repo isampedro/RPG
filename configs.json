@@ -1,5 +1,5 @@
 {
-  "maxLines": 100000,
+  "maxLines": 10000,
   "weaponsPath": "allitems/armas.tsv",
   "helmetsPath": "allitems/cascos.tsv",
   "glovesPath": "allitems/guantes.tsv",
@@ -7,17 +7,17 @@
   "armorsPath": "allitems/pecheras.tsv",
   "playerClass": "archer",
   "firstSelectionMethod": "elite",
-  "secondSelectionMethod": "elite",
+  "secondSelectionMethod": "probabilistic_tournament",
   "A": 0.7,
   "K": 200,
-  "firstReplacementMethod": "elite",
-  "secondReplacementMethod": "elite",
+  "firstReplacementMethod": "roulette",
+  "secondReplacementMethod": "probabilistic_tournament",
   "B": 0.3,
   "N": 400,
   "deterministicM": 10,
   "crossover": "uniform",
   "mutation": "complete_mutation",
-  "Pm": 0.1,
+  "Pm": 0.35,
   "implementation": "fill_parent",
   "initialPopulation": 1000,
   "evaluator": "gen_q",
@@ -28,5 +28,7 @@
   "structureDiversity": 0.75,
   "delta": 0.00000000000001,
   "T0": 100.0,
-  "Tc": 98.4
+  "Tc": 98.4,
+  "threshold": 0.03,
+  "temperatureK": 0.01
 }
