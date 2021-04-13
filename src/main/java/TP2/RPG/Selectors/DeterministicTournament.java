@@ -15,12 +15,13 @@ public class DeterministicTournament {
         int index;
         for( int i = 0; i < K && i < players.size(); i++ ) {
             for( int j = 0; j < M; j++ ) {
-                index = random.nextInt(players.size()-1);
+                index = random.nextInt(players.size());
                 if( winner == null || winner.getPerformance() < players.get(index).getPerformance() ) {
                     winner = players.get(index);
                 }
             }
             chosen.add(winner);
+            winner = null;
         }
 
         return chosen;

@@ -40,7 +40,7 @@ public class Main {
             evaluator = jsonObject.get("evaluator").toString();
             double A = (double) jsonObject.get("A"), B = (double) jsonObject.get("B"), Pm = (double) jsonObject.get("Pm");
             int N = ((Long) jsonObject.get("N")).intValue(), K = ((Long) jsonObject.get("K")).intValue(), M = ((Long) jsonObject.get("deterministicM")).intValue();
-            int initialPopulation = ((Long) jsonObject.get("initialPopulation")).intValue(), maxGenerations = ((Long) jsonObject.get("maxGenerations")).intValue();
+            int initialPopulation = ((Long) jsonObject.get("N")).intValue(), maxGenerations = ((Long) jsonObject.get("maxGenerations")).intValue();
             long maxMillis = (long) jsonObject.get("maxMillis");
             int acceptableSolution = ((Long)jsonObject.get("acceptableSolution")).intValue();
 

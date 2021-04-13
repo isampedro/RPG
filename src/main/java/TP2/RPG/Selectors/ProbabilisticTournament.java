@@ -17,8 +17,8 @@ public class ProbabilisticTournament {
         double r;
         for( int i = 0; i < K; i++ ) {
             r = random.nextDouble();
-            index1 = random.nextInt(players.size()-1);
-            index2 = random.nextInt(players.size()-1);
+            index1 = random.nextInt(players.size());
+            index2 = random.nextInt(players.size());
             if( r < threshold ) {
                 if( players.get(index1).getPerformance() < players.get(index2).getPerformance()) {
                     chosen.add(players.get(index2));
