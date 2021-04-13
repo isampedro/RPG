@@ -25,7 +25,7 @@ public class Resolver {
                               String evaluatorValue, Long parameterMillis, double Pm, String implementation, String replacement, int N,
                               int maxGen, int startingParents, double A, double B, String secondSelection, String secondReplacement, int maxRoundsNoChange,
                               double structureVariety, double delta, int acceptableSolution, double T0, double Tc, double threshold, double temperatureK ) {
-        List<Player> newGeneration = new ArrayList<>(), population = new ArrayList<>(), auxGeneration, lastGeneration;
+        List<Player> newGeneration = new ArrayList<>(), population = new ArrayList<>(), auxGeneration = new ArrayList<>();
         Evaluator evaluator = evaluator(evaluatorValue);
         double minimumFitness, averageFitness, maximumFitness;
         Random random = new Random(System.currentTimeMillis());
@@ -41,6 +41,7 @@ public class Resolver {
         int replaceSize1 = (int) (N*B), replaceSize2 = N - replaceSize1;
         int selectionSize1 = (int) (K*A), selectionSize2 = K - selectionSize1;
         do {
+            auxGeneration.clear();
             newGeneration.clear();
             minimumFitness = population.get(0).getPerformance();
             maximumFitness = population.get(0).getPerformance();
@@ -95,9 +96,6 @@ public class Resolver {
             }
 
             System.out.println(averageFitness + " " + minimumFitness + " " + (1-(similarity/population.size())) + " " + maximumFitness + " ");
-
-            lastGeneration = new ArrayList<>(auxGeneration);
-            auxGeneration.clear();
         } while( evaluator != null && evaluator.evaluate(start, parameterMillis, generation, maxGen, population, maxRoundsNoChange, structureVariety, delta, acceptableSolution) );
 
         minimumFitness = population.get(0).getPerformance();
@@ -116,12 +114,11 @@ public class Resolver {
 
         similarity = 0;
 
-        for (Player player : lastGeneration) {
+        for (Player player : auxGeneration) {
             isSimilar = false;
             for( int i = 0; i < population.size() && !isSimilar; i++ ) {
                 if( player.isSimilar(population.get(i), delta)) {
                     isSimilar = true;
-                    population.remove(i);
                 }
             }
 
@@ -130,7 +127,7 @@ public class Resolver {
             }
         }
 
-        System.out.println(averageFitness + " " + minimumFitness + " " + (1-(similarity/lastGeneration.size())) + " " + maximumFitness + " ");
+        System.out.println(averageFitness + " " + minimumFitness + " " + (1-(similarity/auxGeneration.size())) + " " + maximumFitness + " ");
         return population;
     }
 
