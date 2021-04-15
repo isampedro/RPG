@@ -16,7 +16,7 @@ public class EvaluateMax implements Evaluator {
                 aux = player;
             }
         }
-        if( max == null || max.getPerformance() < aux.getPerformance() ) {
+        if( max == null || max.getPerformance() != aux.getPerformance() ) {
             counter = 0;
             max = aux;
         }
